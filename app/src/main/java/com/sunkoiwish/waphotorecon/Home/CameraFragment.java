@@ -76,7 +76,7 @@ public class CameraFragment extends Fragment{
     Button btnUpFireBase;
 
     // define camera constant
-    final int RC_TAKE_PHOTO = 1;
+    final int RC_TAKE_PHOTO = 10;
 
     // Define FireBase
     private FirebaseApp app;
@@ -94,6 +94,7 @@ public class CameraFragment extends Fragment{
         // Firebase instances
         app = FirebaseApp.getInstance();
         auth = FirebaseAuth.getInstance(app);
+
         // Connect to firebase cloud storage
         mstorageReference = FirebaseStorage.getInstance().getReference();
         // Database reference for our Photo
@@ -108,6 +109,9 @@ public class CameraFragment extends Fragment{
         // Now we will define an imageView for to show to captured image
         imageView = (ImageView) view.findViewById(R.id.camfrag_imageView);
 
+        // init buttons
+        btnTakePic = (Button) view.findViewById(R.id.camera_photo_btn);
+
         // FireBase Upload Button and onClickListener... NOT USED
         btnUpFireBase = (Button) view.findViewById(R.id.add_firebasephoto_btn);
         btnUpFireBase.setOnClickListener( new View.OnClickListener(){
@@ -117,8 +121,6 @@ public class CameraFragment extends Fragment{
             }
         });
 
-
-        btnTakePic = (Button) view.findViewById(R.id.camera_photo_btn);
         btnTakePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +143,7 @@ public class CameraFragment extends Fragment{
         // Our photo activity is now launch for camera
         Log.d(TAG, "onActivityResult: Starting camera...");
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        getActivity().startActivityForResult(intent, RC_TAKE_PHOTO);
+        startActivityForResult(intent, RC_TAKE_PHOTO);
 
     }
 
@@ -173,6 +175,8 @@ public class CameraFragment extends Fragment{
     }
 
 
+    // Fire base storage and database automatically create a background task.
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
@@ -198,21 +202,21 @@ public class CameraFragment extends Fragment{
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //TO DO
                     // TO:DO Get URI from the database and store into real time database
-                    Toast.makeText(mcameraFragment.getApplicationContext(), "Image Storage Upload Done!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Image Storage Upload Done!", Toast.LENGTH_LONG).show();
 
                     @SuppressWarnings("VisibleForTests") Uri downloadUrl = taskSnapshot.getDownloadUrl();
 
                     // Now we store that main URL for real-time database
                     //storage_downloadURL = downloadUrl;
 
-                    Toast.makeText(mcameraFragment, "Starting real-time database upload!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Starting real-time database upload!", Toast.LENGTH_LONG).show();
                     String photo_name = "";
                     Date currentTime = Calendar.getInstance().getTime();
 
                     // Photo name is auto generated, main parts to class
                     String date_time_s = currentTime.toString();
-                    photo_name = photo_name + "WA" + date_time_s.substring(0,date_time_s.length());
-                    String description = editText.toString();
+                    photo_name = photo_name + "WA " + date_time_s.substring(0,date_time_s.length());
+                    String description = editText.getText().toString();
 
                     // This generates a random ID for our database ID
                     String UID = databasePhoto.push().getKey();
@@ -227,7 +231,7 @@ public class CameraFragment extends Fragment{
                     // Now to store into our database!! Now it's in our real-time database
                     databasePhoto.child(UID).setValue(nphoto);
 
-                    Toast.makeText(mcameraFragment, "Upload Success to Real-Time Database!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Upload Success to Real-Time Database!", Toast.LENGTH_LONG).show();
 
                 }
             }); // add failure method

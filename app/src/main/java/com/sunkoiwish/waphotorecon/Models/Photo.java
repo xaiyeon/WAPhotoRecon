@@ -6,59 +6,70 @@ package com.sunkoiwish.waphotorecon.Models;
 
 public class Photo {
 
-    String photoID;
-    String photoName;
-    String imgDataURL;
-    String photoDescription;
-    String photoCreateDate;
+    private String photo_id;
+    private String photoName;
+    private String imgdata_url;
+    private String photo_description;
+    private String photo_create_date;
 
     public Photo(){}
 
-    public Photo(String photoID, String photoName, String imgDataURL, String photoDescription, String photoCreateDate) {
-        this.photoID = photoID;
+    public Photo(String photo_id, String photoName, String imgdata_url, String photo_description, String photo_create_date) {
+        this.photo_id = photo_id;
         this.photoName = photoName;
-        this.imgDataURL = imgDataURL;
-        this.photoDescription = photoDescription;
-        this.photoCreateDate = photoCreateDate;
+        this.imgdata_url = imgdata_url;
+        this.photo_description = photo_description;
+        this.photo_create_date = photo_create_date;
     }
 
-    public String getPhotoID() {
-        return photoID;
+    public String getPhoto_id() {
+        return photo_id;
+    }
+
+    public void setPhoto_id(String photo_id) {
+        this.photo_id = photo_id;
     }
 
     public String getPhotoName() {
         return photoName;
     }
 
-    public String getImgDataURL() {
-        return imgDataURL;
-    }
-
-    public String getPhotoDescription() {
-        return photoDescription;
-    }
-
-    public String getPhotoCreateDate() {
-        return photoCreateDate;
-    }
-
-    public void setPhotoID(String photoID) {
-        this.photoID = photoID;
-    }
-
     public void setPhotoName(String photoName) {
         this.photoName = photoName;
     }
 
-    public void setImgDataURL(String imgDataURL) {
-        this.imgDataURL = imgDataURL;
+    public String getImgdata_url() {
+        return imgdata_url;
     }
 
-    public void setPhotoDescription(String photoDescription) {
-        this.photoDescription = photoDescription;
+    public void setImgdata_url(String imgdata_url) {
+        this.imgdata_url = imgdata_url;
     }
 
-    public void setPhotoCreateDate(String photoCreateDate) {
-        this.photoCreateDate = photoCreateDate;
+    public String getPhoto_description() {
+        return photo_description;
+    }
+
+    public void setPhoto_description(String photo_description) {
+        this.photo_description = photo_description;
+    }
+
+    public String getPhoto_create_date() {
+        return photo_create_date;
+    }
+
+    public void setPhoto_create_date(String photo_create_date) {
+        this.photo_create_date = photo_create_date;
+    }
+
+    @Override
+    public String toString() {
+        return "Photo{" +
+                "photo_id='" + photo_id + '\'' +
+                ", photoName='" + photoName + '\'' +
+                ", imgdata_url='" + imgdata_url + '\'' +
+                ", photo_description='" + photo_description + '\'' +
+                ", photo_create_date='" + photo_create_date + '\'' +
+                '}';
     }
 }

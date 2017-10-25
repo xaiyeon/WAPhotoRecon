@@ -69,6 +69,9 @@ dependencies {
     // Matisse Photo Gallery
     compile 'com.zhihu.android:matisse:0.4.3'
 
+    // FirebaseUI for Firebase Realtime Database
+    compile 'com.firebaseui:firebase-ui-database:0.5.3'
+
 
 }
 
