@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "944844192883",
+    "firebase_url": "https://waphotorecon-app.firebaseio.com",
+    "project_id": "waphotorecon-app",
+    "storage_bucket": "waphotorecon-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944844192883:android:f81c4eb8d75e272d",
+        "android_client_info": {
+          "package_name": "com.sunkoiwish.waphotorecon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "944844192883-pjpk7j0o4933qs1gcsiqfg002nkv4hpg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunkoiwish.waphotorecon",
+            "certificate_hash": "1a95880371db32e847f4166e7c0216719f0345b9"
+          }
+        },
+        {
+          "client_id": "944844192883-rt4mkod3aiq3rfhir3fil1qr2rhqcofb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunkoiwish.waphotorecon",
+            "certificate_hash": "af83ea392291ead2db68821fc9c175b2147df918"
+          }
+        },
+        {
+          "client_id": "944844192883-0s13p6s9ct9085iqh2um8ekdr6rdkb9b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYHRTMkxkeL3N13779ELUKH6trJti1TYk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "944844192883-0s13p6s9ct9085iqh2um8ekdr6rdkb9b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
