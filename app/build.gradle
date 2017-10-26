@@ -72,6 +72,7 @@ dependencies {
     // FirebaseUI for Firebase Realtime Database
     compile 'com.firebaseui:firebase-ui-database:0.5.3'
 
+    // Just a comment
 
 }
 
