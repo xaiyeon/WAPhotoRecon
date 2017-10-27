@@ -40,7 +40,9 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sunkoiwish.waphotorecon.Models.Photo;
+import com.sunkoiwish.waphotorecon.Models.UserPhoto;
 import com.sunkoiwish.waphotorecon.R;
+import com.sunkoiwish.waphotorecon.Utils.ImageFixer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -75,6 +77,9 @@ public class CameraFragment extends Fragment{
     EditText editText;
     Button btnUpFireBase;
 
+    // for progress
+    ProgressDialog progressDialog;
+
     // define camera constant
     final int RC_TAKE_PHOTO = 10;
 
@@ -98,7 +103,7 @@ public class CameraFragment extends Fragment{
         // Connect to firebase cloud storage
         mstorageReference = FirebaseStorage.getInstance().getReference();
         // Database reference for our Photo
-        databasePhoto = FirebaseDatabase.getInstance().getReference("photos");
+        databasePhoto = FirebaseDatabase.getInstance().getReference("allphotos");
 
         // need to use for permissions
         final CameraFragment cameraFragment = this;
@@ -185,19 +190,54 @@ public class CameraFragment extends Fragment{
         // Make an else to print log for not working
         if (requestCode == RC_TAKE_PHOTO && resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult: Now onActivityResult...");
-            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+
+            Uri newUri = data.getData();
+            Bitmap bitmap = null;
+            File filep = null;
+            Uri the_storage_uri = null;
+
+            // We will shrink this photo man... If it works...
+            // So what we are trying to do now is save this bitmap to the phone's storage and
+            // retrieve the filepath of the new shrunken image and upload that version.
+
+            try {
+                // We fix the image, then we store it.
+                bitmap = ImageFixer.handleSamplingAndRotationBitmap(getContext(),newUri);
+                Log.d(TAG, "onActivityResult: Passed resizing of the image...");
+                // now we store it and use that file for uploading.
+                filep = ImageFixer.storeImage(bitmap, getContext());
+                Log.d(TAG, "onActivityResult: Passed storing to SDCARD...");
+                the_storage_uri = ImageFixer.getImageContentUri(getContext(),filep);
+                Log.d(TAG, "onActivityResult: Passed generating the URI...");
+                //bitmap = MediaStore.Images.Media.getBitmap(mcameraFragment.getContentResolver(), newUri);
+
+            } catch (IOException e) {
+                Toast.makeText(getActivity(), "FAILED TO CAPTURE AND RESIZE IMAGE.", Toast.LENGTH_LONG).show();
+            }
+
+
+            //Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);
 
-            Log.d(TAG, "onActivityResult: Took a photo...");
-            // Now we use newUri for storing photo into FireBase storage
-            Uri newUri = data.getData();
+            // Progress
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Please wait...");
+            progressDialog.setMessage("Performing operations...");
+            progressDialog.show();
 
-            // this is where we put the image in cloud fire base storage
-            StorageReference uploadTask  = mstorageReference.child("All WA Photos").child(newUri.getLastPathSegment());
+            Log.d(TAG, "onActivityResult: processing...");
+            // Now we use newUri for storing photo into FireBase storage
+            // newUri = data.getData();
+
+            // this is where we put the image in cloud fire base storage, in regards to user
+
+            String user_id = auth.getCurrentUser().getUid().toString();
+
+            StorageReference uploadTask  = mstorageReference.child("photos/users/" + user_id.replace("/", "")).child(newUri.getLastPathSegment());
             // Now we trying to upload image...
             Log.d(TAG, "onActivityResult: Trying to Upload to Fire Base Storage");
 
-            uploadTask.putFile(newUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.putFile(the_storage_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     //TO DO
@@ -226,11 +266,18 @@ public class CameraFragment extends Fragment{
                     // Preparing image for upload to Cloud Storage, this is the URL we store in real-time database
 
                     // Now we have everything we need to store on real-time database according to our model class.
-                    Photo nphoto = new Photo(UID, photo_name, main_data_URL, description, date_time_s);
+                    Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString() ,photo_name, main_data_URL, description, date_time_s);
 
                     // Now to store into our database!! Now it's in our real-time database
+                    // This is for ALL THE PHOTOS
                     databasePhoto.child(UID).setValue(nphoto);
 
+                    // Next we store the photo into the real-time database for just that user so we can just pull that user's photos...
+                    databasePhoto = FirebaseDatabase.getInstance().getReference("userphotos").child(auth.getCurrentUser().getUid().toString());
+                    UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), photo_name, main_data_URL, description, date_time_s);
+                    databasePhoto.child(UID).setValue(nphoto);
+
+                    progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Upload Success to Real-Time Database!", Toast.LENGTH_LONG).show();
 
                 }

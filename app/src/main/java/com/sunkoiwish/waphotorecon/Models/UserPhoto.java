@@ -1,23 +1,23 @@
 package com.sunkoiwish.waphotorecon.Models;
 
 /**
- * Created by Xaiyeon on 10/24/2017.
+ * Created by Xaiyeon on 10/27/2017.
  */
 
-public class Photo {
+public class UserPhoto {
 
-    private String photo_id;
+    private String user_photo_id;
     private String user_id;
     private String photoName;
     private String imgdata_url;
     private String photo_description;
     private String photo_create_date;
 
-    public Photo() {
+    public UserPhoto() {
     }
 
-    public Photo(String photo_id, String user_id, String photoName, String imgdata_url, String photo_description, String photo_create_date) {
-        this.photo_id = photo_id;
+    public UserPhoto(String user_photo_id, String user_id, String photoName, String imgdata_url, String photo_description, String photo_create_date) {
+        this.user_photo_id = user_photo_id;
         this.user_id = user_id;
         this.photoName = photoName;
         this.imgdata_url = imgdata_url;
@@ -25,12 +25,12 @@ public class Photo {
         this.photo_create_date = photo_create_date;
     }
 
-    public String getPhoto_id() {
-        return photo_id;
+    public String getUser_photo_id() {
+        return user_photo_id;
     }
 
-    public void setPhoto_id(String photo_id) {
-        this.photo_id = photo_id;
+    public void setUser_photo_id(String user_photo_id) {
+        this.user_photo_id = user_photo_id;
     }
 
     public String getUser_id() {
@@ -75,8 +75,8 @@ public class Photo {
 
     @Override
     public String toString() {
-        return "Photo{" +
-                "photo_id='" + photo_id + '\'' +
+        return "UserPhoto{" +
+                "user_photo_id='" + user_photo_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", photoName='" + photoName + '\'' +
                 ", imgdata_url='" + imgdata_url + '\'' +
