@@ -8,19 +8,26 @@ public class Photo {
 
     private String photo_id;
     private String user_id;
+    private String user_name;
     private String photoName;
     private String imgdata_url;
+    private String taken_location;
+    private String location_name;
     private String photo_description;
     private String photo_create_date;
 
     public Photo() {
     }
 
-    public Photo(String photo_id, String user_id, String photoName, String imgdata_url, String photo_description, String photo_create_date) {
+
+    public Photo(String photo_id, String user_id, String user_name, String photoName, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date) {
         this.photo_id = photo_id;
         this.user_id = user_id;
+        this.user_name = user_name;
         this.photoName = photoName;
         this.imgdata_url = imgdata_url;
+        this.taken_location = taken_location;
+        this.location_name = location_name;
         this.photo_description = photo_description;
         this.photo_create_date = photo_create_date;
     }
@@ -41,6 +48,14 @@ public class Photo {
         this.user_id = user_id;
     }
 
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
     public String getPhotoName() {
         return photoName;
     }
@@ -55,6 +70,22 @@ public class Photo {
 
     public void setImgdata_url(String imgdata_url) {
         this.imgdata_url = imgdata_url;
+    }
+
+    public String getTaken_location() {
+        return taken_location;
+    }
+
+    public void setTaken_location(String taken_location) {
+        this.taken_location = taken_location;
+    }
+
+    public String getLocation_name() {
+        return location_name;
+    }
+
+    public void setLocation_name(String location_name) {
+        this.location_name = location_name;
     }
 
     public String getPhoto_description() {
@@ -78,8 +109,11 @@ public class Photo {
         return "Photo{" +
                 "photo_id='" + photo_id + '\'' +
                 ", user_id='" + user_id + '\'' +
+                ", user_name='" + user_name + '\'' +
                 ", photoName='" + photoName + '\'' +
                 ", imgdata_url='" + imgdata_url + '\'' +
+                ", taken_location='" + taken_location + '\'' +
+                ", location_name='" + location_name + '\'' +
                 ", photo_description='" + photo_description + '\'' +
                 ", photo_create_date='" + photo_create_date + '\'' +
                 '}';

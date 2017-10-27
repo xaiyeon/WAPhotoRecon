@@ -50,8 +50,14 @@ public class FireBaseFragment extends Fragment {
     private FirebaseApp app;
     private FirebaseAuth auth;
 
-    // Define the Teacher Firebase DatabaseReference
+    // Define the photos Firebase DatabaseReference
     private DatabaseReference database_photos;
+
+    // Define the user_photos Firebase DatabaseReference
+    private DatabaseReference database_user_photos;
+
+    // Define the users Firebase DatabaseReference
+    private DatabaseReference database_users;
 
     Query query = FirebaseDatabase.getInstance()
             .getReference()
@@ -105,6 +111,7 @@ public class FireBaseFragment extends Fragment {
         // get from out database of the userphotos photos
         database_photos = FirebaseDatabase.getInstance().getReference("userphotos").child(auth.getCurrentUser().getUid().toString());
 
+
         View view = inflater.inflate(R.layout.fragment_fire_base, container, false);
 
         rec_view = (RecyclerView) view.findViewById(R.id.FireBaseDB_RecView);
@@ -122,8 +129,9 @@ public class FireBaseFragment extends Fragment {
             @Override
             protected void populateViewHolder(UserImageViewHolder viewHolder, UserPhoto model, int position) {
 
-                viewHolder.txtname.setText(model.getUser_id());
+                viewHolder.txtname.setText(auth.getCurrentUser().getDisplayName());
                 viewHolder.txtdate.setText(model.getPhoto_create_date());
+                viewHolder.txtloc.setText(model.getLocation_name()); // where is it
                 viewHolder.txtdesc.setText(model.getPhoto_description());
                 viewHolder.txtimgname.setText(model.getPhotoName());
                 Picasso.with(getContext()).load(model.getImgdata_url()).into(viewHolder.imgUsersimg);
@@ -194,6 +202,7 @@ public class FireBaseFragment extends Fragment {
 
         TextView txtname;
         TextView txtdate;
+        TextView txtloc;
         TextView txtimgname;
         TextView txtdesc;
         ImageView imgUsersimg;
@@ -202,6 +211,7 @@ public class FireBaseFragment extends Fragment {
             super(itemView);
             txtname = (TextView) itemView.findViewById(R.id.layout_usernameoremail);
             txtdate = (TextView) itemView.findViewById(R.id.layout_createdate);
+            txtloc = (TextView) itemView.findViewById(R.id.layout_location);
             txtimgname = (TextView) itemView.findViewById(R.id.layout_imgname);
             txtdesc = (TextView) itemView.findViewById(R.id.layout_description);
             imgUsersimg = (ImageView) itemView.findViewById(R.id.layout_userimage);

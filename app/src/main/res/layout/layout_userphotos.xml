@@ -7,93 +7,122 @@
     >
 
     <RelativeLayout
-        android:id="@+id/layout_userphotos_1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
 
-        <TextView
-            android:id="@+id/layout_usernameoremail"
+
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"/>
 
-    </RelativeLayout>
+            >
 
-    <RelativeLayout
-        android:id="@+id/layout_userphotos_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="6dp"
-        android:layout_below="@+id/layout_userphotos_1"
-        >
+            <TextView
+                android:id="@+id/layout_usernameoremail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"/>
 
-        <TextView
-            android:id="@+id/layout_createdate"
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:padding="6dp"
+            android:layout_below="@+id/layout_userphotos_1"
+            >
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/layout_createdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-    <RelativeLayout
-        android:id="@+id/layout_userphotos_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-    android:layout_below="@+id/layout_userphotos_2"
-        >
+        </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/layout_userimage"
-            android:layout_width="260dp"
-            android:layout_height="260dp"
-            android:layout_centerHorizontal="true"
-            android:focusable="true"/>
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_userphotos_4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_userphotos_3"
-        >
-
-        <TextView
-            android:id="@+id/layout_imgname"
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_userphotos_2"
+            >
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/layout_userimage"
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_centerHorizontal="true"
+                android:focusable="true"/>
 
-    <RelativeLayout
-        android:id="@+id/layout_userphotos_5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_userphotos_4"
-        >
+        </RelativeLayout>
 
-        <TextView
-            android:id="@+id/layout_description"
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_userphotos_3"
+            >
+
+            <TextView
+                android:id="@+id/layout_imgname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_userphotos_4"
+            >
+
+            <TextView
+                android:id="@+id/layout_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_userphotos_5"
+            >
+
+            <TextView
+                android:id="@+id/layout_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_7"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/layout_userphotos_6"
+            android:layout_height="15dp"
+            android:layout_alignParentBottom="true"
+            >
+
+
+        </RelativeLayout>
+
 
     </RelativeLayout>
-
-
-
-    <RelativeLayout
-        android:id="@+id/layout_userphotos_6"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/layout_userphotos_5"
-        android:layout_height="15dp"
-        android:layout_alignParentBottom="true"
-        >
-
-
-    </RelativeLayout>
-
-
-
 
 
 

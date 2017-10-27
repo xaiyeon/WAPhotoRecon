@@ -1,6 +1,8 @@
 package com.sunkoiwish.waphotorecon.Home;
 
 import android.content.Context;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -44,6 +46,10 @@ public class HomeActivity extends FragmentActivity {
     // This is used for highlighting the selected activity in the menu, starts at 0
     // This is NOT USED, since switched to fragments.
     private static final int ACTIVITY_NUMBER = 0;
+
+    // used for getting location
+    private LocationManager locationManager;
+    private LocationListener locationListener;
 
     // Was used enableBotNavigation
     private Context mContext = HomeActivity.this;
@@ -92,7 +98,7 @@ public class HomeActivity extends FragmentActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_camera);
-        tabLayout.getTabAt(1).setIcon(R.drawable.ic_main_logo);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_midnone);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_log);
 
     }

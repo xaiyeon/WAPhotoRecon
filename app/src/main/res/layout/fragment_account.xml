@@ -9,6 +9,9 @@
         android:id="@+id/accountText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="11dp"
         android:ems="16"
         android:fontFamily="sans-serif"
         android:inputType="none"
@@ -19,17 +22,45 @@
         android:textSize="30sp"
         android:typeface="normal" />
 
+    <EditText
+        android:id="@+id/account_displaynameEdittxt"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/accountText"
+        android:layout_marginTop="42dp"
+        android:hint="Change display name" />
 
     <Button
+        android:id="@+id/account_updateprofile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/signout_Btn"
-        android:text="Sign Out"
-        android:background="@drawable/white_onclick_grey"
-        android:layout_marginTop="80dp"
+        android:layout_below="@+id/accFrag_textView"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp"
+        android:background="@drawable/white_onclick_grey"
+        android:text="Update Display Name." />
+
+    <Button
+        android:id="@+id/signout_Btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
 
-        />
+        android:layout_below="@+id/account_updateprofile_btn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/white_onclick_grey"
+        android:text="Sign Out" />
+
+    <TextView
+        android:id="@+id/accFrag_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/account_displaynameEdittxt"
+        android:layout_marginTop="39dp"
+        android:text="TextView" />
+
 
 </RelativeLayout>
