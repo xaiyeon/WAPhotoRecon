@@ -12,11 +12,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.sunkoiwish.waphotorecon.R;
 
 /**
@@ -46,7 +51,13 @@ public class AccountFragment extends Fragment {
 
     // Widget
     private Button mSignout_btn;
+    private Button mUprofile_btn;
+    public EditText displayname_Edittxt;
+    public TextView hello_txtView;
 
+    // Define FireBase
+    private FirebaseApp app;
+    private FirebaseAuth auth;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -90,6 +101,15 @@ public class AccountFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         TextView textView = (TextView) view.findViewById(R.id.accountText);
+        displayname_Edittxt = (EditText) view.findViewById(R.id.account_displaynameEdittxt);
+        hello_txtView = (TextView) view.findViewById(R.id.accFrag_textView);
+
+
+        // Firebase instances
+        app = FirebaseApp.getInstance();
+        auth = FirebaseAuth.getInstance(app);
+
+        hello_txtView.setText("Hello " + auth.getCurrentUser().getDisplayName());
 
         setupFirebaseListener();
 
@@ -101,6 +121,36 @@ public class AccountFragment extends Fragment {
                 FirebaseAuth.getInstance().signOut();
             }
 
+        });
+
+        mUprofile_btn = (Button) view.findViewById(R.id.account_updateprofile_btn);
+        mUprofile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Attempting update of display name...");
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(displayname_Edittxt.getText().toString())
+                        .build();
+
+                user.updateProfile(profileUpdates)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "User profile updated.");
+                                    Toast.makeText(getActivity(), "Display Name has been successfully changed!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Please log out and sign in to see changes!", Toast.LENGTH_LONG).show();
+                                }
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Someone with that Display Name already exists!",
+                                            Toast.LENGTH_LONG).show();
+
+                                }
+                            }
+                        });
+            }
         });
 
 

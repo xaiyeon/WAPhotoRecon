@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sunkoiwish.waphotorecon.Home.HomeActivity;
 import com.sunkoiwish.waphotorecon.R;
@@ -106,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        UniversalImageLoader.setImage("assets://ws_photo_recon_logo.png", mLogo);
+        UniversalImageLoader.setImage("assets://wa_photo_recon_logo.png", mLogo);
 
         hideSoftKeyboard();
     }
@@ -163,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     //check if email is verified
                     if(user.isEmailVerified()){
+
                         Log.d(TAG, "onAuthStateChanged: signed_in: " + user.getUid());
                         Toast.makeText(LoginActivity.this, "Authenticated with: " + user.getEmail(), Toast.LENGTH_SHORT).show();
 

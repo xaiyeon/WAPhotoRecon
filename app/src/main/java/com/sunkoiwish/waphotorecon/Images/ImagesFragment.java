@@ -1,13 +1,21 @@
 package com.sunkoiwish.waphotorecon.Images;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.microsoft.projectoxford.vision.VisionServiceClient;
+import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.sunkoiwish.waphotorecon.R;
 
 /**
@@ -29,6 +37,23 @@ public class ImagesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+
+    /**
+     * Here we will test and try Microsoft Cognitive Services
+     * for analyze image
+     * hopefully it can work!
+     *
+     *
+     */
+
+    // My subscription key for microsoft cog service
+    public VisionServiceClient visionServiceClient = new VisionServiceRestClient("c8fc6c87dde64e5888e49d65cf3d2569");
+
+    // view widgets
+    ImageView imageView;
+    Button mbutton;
+    TextView desc_txtView;
 
     public ImagesFragment() {
         // Required empty public constructor
@@ -61,11 +86,32 @@ public class ImagesFragment extends Fragment {
         }
     }
 
+    // Right here is where we do loading of images and stuff
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_images, container, false);
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sad_test);
+        // fINDING OUR view objects
+
+        imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
+        mbutton = (Button) view.findViewById(R.id.fragimg_submitbtn);
+        desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
+
+        imageView.setImageBitmap(bitmap);
+
+        // our button click
+        mbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // TODO: Left off here for tutorial on Microsfot Cognitive Service Test
+
+               // AsyncTask<>
+            }
+        });
 
         return view;
     }

@@ -30,46 +30,49 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-
     // Firebase stuff
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.google.firebase:firebase-storage:10.0.1'
-    compile 'com.google.firebase:firebase-auth:10.0.1'
-    compile 'com.google.firebase:firebase-database:10.0.1'
-    compile 'com.google.firebase:firebase-crash:10.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
-
-
+    compile 'com.google.firebase:firebase-core:11.6.0'
+    compile 'com.google.firebase:firebase-storage:11.6.0'
+    compile 'com.google.firebase:firebase-auth:11.6.0'
+    compile 'com.google.firebase:firebase-database:11.6.0'
+    compile 'com.google.firebase:firebase-crash:11.6.0'
+    compile 'com.google.firebase:firebase-messaging:11.6.0'
     // Design Support Library
     compile 'com.android.support:design:25.3.1'
-
     // Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     // Design
     compile 'com.android.support:design:25.3.1'
     // Bottom Nav
     compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.1'
-
     // Circle Image View
     compile 'de.hdodenhof:circleimageview:2.1.0'
     // Universal image loader
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
     // Permissions Plug-in
-    compile "com.github.hotchemi:permissionsdispatcher:3.0.1"
+    compile 'com.github.hotchemi:permissionsdispatcher:3.0.1'
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
-
     // Matisse Photo Gallery
     compile 'com.zhihu.android:matisse:0.4.3'
-
-
+    // FirebaseUI for Firebase Realtime Database
+    compile 'com.firebaseui:firebase-ui-database:0.5.3'
+    // Just a comment
+    //Microsoft
+    compile 'com.microsoft.projectoxford:vision:1.0.393'
+    compile 'com.google.code.gson:gson:2.3.1'
+    // Picasso for image get url easily
+    compile 'com.squareup.picasso:picasso:2.5.2'
 }
+
+
+
+
 
 apply plugin: 'com.google.gms.google-services'

@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sunkoiwish.waphotorecon.Models.User;
@@ -44,6 +45,7 @@ public class RegisterActivity extends AppCompatActivity{
     private String email, name, password;
     private User mUser;
 
+    // lets create and store display name...
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +187,7 @@ public class RegisterActivity extends AppCompatActivity{
 
                             //add user details to firebase database
                             addNewUser();
+
                         }
                         if (!task.isSuccessful()) {
                             Toast.makeText(mContext, "Someone with that email already exists",
@@ -207,8 +210,8 @@ public class RegisterActivity extends AppCompatActivity{
         String userid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         Log.d(TAG, "addNewUser: Adding new User: \n user_id:" + userid);
-        mUser.setName(name);
-        mUser.setUser_id(userid);
+        mUser.setDisplay_name(name);
+        mUser.set_user_id(userid);
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
@@ -233,7 +236,7 @@ public class RegisterActivity extends AppCompatActivity{
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-
+                                Toast.makeText(mContext, "Verification email sent.", Toast.LENGTH_SHORT).show();
                             }
                             else{
                                 Toast.makeText(mContext, "couldn't send email", Toast.LENGTH_SHORT).show();
@@ -244,6 +247,8 @@ public class RegisterActivity extends AppCompatActivity{
         }
 
     }
+
+
 
     /**
      * Redirects the user to the login screen
