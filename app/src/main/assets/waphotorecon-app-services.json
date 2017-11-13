@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "waphotorecon-app",
+  "private_key_id": "5e039f94692cb19499e65bf4f11ed772c8a81804",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCTVl8WlBpyCOME\nyKkaopg8IGt0HSVkXRwg1316ke+0oqbDRiFt5XSTzeqMN0GZmMK4ebr3QSp9W5wU\nOEmcrDswkIzReo2rUfP0rvPqhoypZPIVpgh3cb4w9cmrDlLiIAWL1kXEIxK6W+wv\nUxWKSxtHxkTylDJ/HNeLodRvb+kTB0ygfl4HY7ED6ucRtJRE4rXu4Wux0YjFOhaN\nSjbojQDziabfXsaFMVHYAs5rOxBjZu/cYwl6Vwq9g26ufTcv4BzuaLSmTgpDoaNr\n4MnPlAXhqSOGGOiK0n/qEW7SNeYNwSuUmVwHJyGX6UrM1KNF6Gr4ATz8ECr7lfKY\nVojd/x47AgMBAAECggEARI2SbrH4YAisgERREjiG9qrq9Dq/dCQye0Foe8g9LOHl\nD8SotzZk+IR91kG7fxjpuOXCzVp/x5YBWBMchQ5J9/2515nbItRd2wIwMXXrKsHy\nNYpsNA8zPBqQe8uNWvMlQXwwN+NNynIMwbQ5uH/bsJia6fd0S1qDG8/vRO5gFt7A\nyt+n1UOFZbgJ7iK1lQo/skdAN0oZvJI3BDSroWf9NZvQnfPE5EuwJ6NHUroKYUUc\ne3bXEpT7oe53H6wAEfvzZXss1TNjtVIHA7kkUmuYE4dolZVE+cA3HtTSxKCyCSPE\n22bFZzyKQEbQjHPpgGgiudwozaruVMuEpsxZcpAoeQKBgQDHE5jGNvgDViTExWFT\n4GzFkBcsSBefNUunV8//OFz48y/SK6eLTNDQv1jaZAOYywUP+/IQsyubSJTkPhEy\nVVHaKm5b9DR64q145uH2QwNPDXzFJJOfi+XIJiImxsu+MSVAv47z5/dZBaEdmtxU\nUMT0+h5R3TlqhjmLhW1ya4pI9QKBgQC9d3fVnPZhlMb8H3jF1sPbzBTWH0PZGgb4\nGaqK61YQxP7U4VmIK/BFbX7Vvvz+FiHnZOaWHteQV5bTU5ul5vjna5hWFwkW0LTt\n6ln1LRxTMy3875roK/1Kl3K23BPjQZTw14MTM91ruoMST5wx35Loh6FUB8u6isDs\nzzf38GYMbwKBgFHr7Y1751mwJFdZBjE3BGvUXMTbMeVRUD2f9DcJobDMmlw5nKvF\nQ5TzeQP97kD9IqsuObHHmWVAXA0EwZzd4V4O4fUzLDl5eHttP4VQlFb+rN6Pq7QX\nJMrVbm5YllVA8hyP96rFRVM77s45APwtdK9/EeUMTWlZrOqOULiqKnDVAoGAPDmd\nfelG5/3CwqG+YiTCXTuh4+5MQtZjILoH2+CymuIDnueC7iYJWghUKN1szdd7L3KD\nWXS0UM2Gw+Xvs+yXcfhhk/v+h6IP4RB9R9HvDwNVuvDu7J4PBYbekAGk0Lgn/+aB\nY7k4yOWghFGJ9NB8gi2auns/5yvz51J3F/jyd0ECgYBAfWWbYQy3TwqcFKyrV6bQ\n0enU6bQeWf20gnCUIA2T788uiXzFsLpDSsn+15CiNYckrIZq9ogQq8zLHP7ozdRO\nhWxwiK8GfAD5u605jglK2iFSrlkWD5z12ApHGxOgAD23NFG0MZzW3IH9xXLGaIif\nHfTMQW8HsZ+biTQe3Fk3Rw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-qupid@waphotorecon-app.iam.gserviceaccount.com",
+  "client_id": "103330935636550159808",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-qupid%40waphotorecon-app.iam.gserviceaccount.com"
+}

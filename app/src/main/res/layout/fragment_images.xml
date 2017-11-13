@@ -35,7 +35,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/fragimg_preseclay"
+            >
 
             <Button
                 android:id="@+id/fragimg_submitbtn"
@@ -48,7 +50,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragimg_preseclay"
+            >
 
             <TextView
                 android:id="@+id/fragimg_desctxtview"
@@ -59,6 +63,20 @@
 
 
 
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragimg_seclay"
+        >
+
+        <Button
+            android:id="@+id/sync_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Sync" />
 
     </RelativeLayout>
 
