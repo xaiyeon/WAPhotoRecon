@@ -35,7 +35,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/fragimg_preseclay"
+            >
 
             <Button
                 android:id="@+id/fragimg_submitbtn"
@@ -48,13 +50,25 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragimg_preseclay"
+            android:background="@color/white"
+            >
 
             <TextView
                 android:id="@+id/fragimg_desctxtview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="description" />
+
+            <TextView
+                android:id="@+id/fragimg_faceage_txtview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="faces, age"
+                android:paddingTop="50dp"
+                />
+
         </RelativeLayout>
 
 
