@@ -22,6 +22,7 @@ import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
 import com.microsoft.projectoxford.vision.contract.Caption;
 import com.microsoft.projectoxford.vision.contract.Face;
+import com.microsoft.projectoxford.vision.contract.Tag;
 import com.sunkoiwish.waphotorecon.R;
 
 import org.w3c.dom.Text;
@@ -138,15 +139,19 @@ public class ImagesFragment extends Fragment {
                     @Override
                     protected String doInBackground(InputStream... params) {
                         try {
+                            // Progress dialog
                             publishProgress("Recognizing...");
                             // we add what features we want.
                             // TODO: Implement the other information from the json file
+                            // String array of list of features I want in JSON object
                             String[] features = {"Description","Tags","ImageType", "Color", "Faces", "Adult", "Categories"};
                             String[] details = {};
                             AnalysisResult result = visionServiceRestClient.analyzeImage(params[0], features, details);
 
                             // This stores the gotten data into a string that is of Gson
                             String strResult = new Gson().toJson(result);
+
+                            Log.d(TAG, strResult);
                             return strResult;
 
                         } catch (Exception e){
@@ -154,8 +159,7 @@ public class ImagesFragment extends Fragment {
                         }
                     }
 
-                    // genereated, alt + inst Override
-
+                    // genereated code below, alt + inst Override, for the task execution
                     @Override
                     protected void onPreExecute() {
                         prgDialog.show();
@@ -175,9 +179,9 @@ public class ImagesFragment extends Fragment {
                         StringBuilder faceage_SB = new StringBuilder();
 
                         // Just for description caption...
-                        for(Caption caption:result.description.captions)
+                        for(Tag tag:result.tags)
                         {
-                            desc_SB.append(caption.text);
+                            desc_SB.append(tag.name);
                         }
                         desc_txtView.setText(desc_SB);
 
