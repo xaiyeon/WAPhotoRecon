@@ -67,6 +67,14 @@ public class ConnectFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_connect, container, false);
 
+
+        // TODO: Add a firebase query to sync pictures
+        // Add two buttons, one for syncing and one for analyizing the images and storing
+        // into the firebase database
+
+        // Add a new field to the photos called isAnalyzed, so this way we only fetch photos
+        // that have not been analyzed already from the database.
+
         return view;
     }
 

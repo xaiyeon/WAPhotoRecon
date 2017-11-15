@@ -174,6 +174,13 @@ public class ImagesFragment extends Fragment {
                         StringBuilder desc_SB = new StringBuilder();
                         StringBuilder faceage_SB = new StringBuilder();
 
+                        // Just for description caption...
+                        for(Caption caption:result.description.captions)
+                        {
+                            desc_SB.append(caption.text);
+                        }
+                        desc_txtView.setText(desc_SB);
+
                         // TODO: Confused on above and here...
                         //for(Face face:result.faces.)
 

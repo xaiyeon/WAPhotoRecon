@@ -5,9 +5,33 @@
     tools:context="com.sunkoiwish.waphotorecon.Connect.ConnectFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+    <RelativeLayout
+        android:id="@+id/fragconnect_lay1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/fragcon_syncbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sync Files" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragonnect_lay2"
+        android:layout_below="@+id/fragconnect_lay1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/fragcon_analyzebutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Analyze Images" />
+
+    </RelativeLayout>
 
 </RelativeLayout>
