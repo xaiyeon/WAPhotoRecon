@@ -15,6 +15,8 @@ public class UserPhoto {
     private String location_name;
     private String photo_description;
     private String photo_create_date;
+    private String isAnalyzed; // used for checking if photo has been analyzed already or not
+    // false or true, all initial photos are set to false.
 
     public UserPhoto() {
     }

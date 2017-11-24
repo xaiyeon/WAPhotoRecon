@@ -21,6 +21,8 @@ import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.AnalysisResult;
 import com.microsoft.projectoxford.vision.contract.Caption;
+import com.microsoft.projectoxford.vision.contract.Face;
+import com.microsoft.projectoxford.vision.contract.Tag;
 import com.sunkoiwish.waphotorecon.R;
 
 import org.w3c.dom.Text;
@@ -69,7 +71,7 @@ public class ImagesFragment extends Fragment {
     ImageView imageView;
     Button mbutton;
     TextView desc_txtView;
-    Button syncButton;
+    TextView age_txtView;
 
     public ImagesFragment() {
         // Required empty public constructor
@@ -115,8 +117,7 @@ public class ImagesFragment extends Fragment {
         imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
         mbutton = (Button) view.findViewById(R.id.fragimg_submitbtn);
         desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
-        syncButton = (Button) view.findViewById(R.id.sync_btn);
-
+        age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
 
         imageView.setImageBitmap(bitmap);
 
@@ -125,21 +126,10 @@ public class ImagesFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 
-        // Our button for sync from FireBase real-time database
-        syncButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "SyncButton: Clicked.");
-
-            }
-        });
-
-
-
-        // our button click for test image
+        // our button click
         mbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
 
                 Log.d(TAG, "buttonClickMicrosoft: Button pressed.");
                 // Here we have an async tasks that will return our results from Microsoft
@@ -149,13 +139,19 @@ public class ImagesFragment extends Fragment {
                     @Override
                     protected String doInBackground(InputStream... params) {
                         try {
+                            // Progress dialog
                             publishProgress("Recognizing...");
-                            String[] features = {"Description"};
+                            // we add what features we want.
+                            // TODO: Implement the other information from the json file
+                            // String array of list of features I want in JSON object
+                            String[] features = {"Description","Tags","ImageType", "Color", "Faces", "Adult", "Categories"};
                             String[] details = {};
-
                             AnalysisResult result = visionServiceRestClient.analyzeImage(params[0], features, details);
 
+                            // This stores the gotten data into a string that is of Gson
                             String strResult = new Gson().toJson(result);
+
+                            Log.d(TAG, strResult);
                             return strResult;
 
                         } catch (Exception e){
@@ -163,8 +159,7 @@ public class ImagesFragment extends Fragment {
                         }
                     }
 
-                    // genereated, alt + inst Override
-
+                    // genereated code below, alt + inst Override, for the task execution
                     @Override
                     protected void onPreExecute() {
                         prgDialog.show();
@@ -174,16 +169,44 @@ public class ImagesFragment extends Fragment {
                     protected void onPostExecute(String s) {
                         prgDialog.dismiss();
 
-                        // Convert back string to object.
+                        // Convert back the string to object.
                         AnalysisResult result = new Gson().fromJson(s, AnalysisResult.class);
                         // had to declare as final View
                         desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for(Caption caption:result.description.captions){
-                            stringBuilder.append(caption.text);
+                        age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
+
+                        StringBuilder desc_SB = new StringBuilder();
+                        StringBuilder faceage_SB = new StringBuilder();
+
+                        // Just for description caption...
+                        for(Tag tag:result.tags)
+                        {
+                            desc_SB.append(tag.name);
                         }
-                        // Set our description here
-                        desc_txtView.setText(stringBuilder);
+                        desc_txtView.setText(desc_SB);
+
+                        // TODO: Confused on above and here...
+                        //for(Face face:result.faces.)
+
+//                        StringBuilder stringBuilder = new StringBuilder();
+//
+//                        // Added this for faces stringBuilder
+//                        StringBuilder facestringBuilder = new StringBuilder();
+//                        // String Face;
+//
+//                        // age
+//                        for(Face face:result.faces){
+//                            facestringBuilder.append(face.age);
+//                        }
+//                        age_txtView.setText(facestringBuilder);
+//
+//
+//                        // description
+//                        for(Caption caption:result.description.captions){
+//                            stringBuilder.append(caption.text);
+//                        }
+//                        // Set our description here
+//                        desc_txtView.setText(stringBuilder);
 
                     }
 
