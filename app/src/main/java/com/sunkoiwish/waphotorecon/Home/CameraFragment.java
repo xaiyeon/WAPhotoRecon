@@ -277,6 +277,9 @@ public class CameraFragment extends Fragment {
                         String main_data_URL = downloadUrl.toString();
                         // Preparing image for upload to Cloud Storage, this is the URL we store in real-time database
 
+                        // Get the device's name
+                        String user_device_name = Build.MANUFACTURER + " " + Build.MODEL + " " + Build.VERSION.RELEASE;
+
                         try {
                             addresses = geocoder.getFromLocation(s_lat, s_long, 1);
 
@@ -297,7 +300,8 @@ public class CameraFragment extends Fragment {
 
 
                         // Now we have everything we need to store on real-time database according to our model class.
-                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s);
+                        // Photo does not include is analyzed or
+                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
 
                         // Now to store into our database!! Now it's in our real-time database
                         // This is for ALL THE PHOTOS
@@ -305,7 +309,7 @@ public class CameraFragment extends Fragment {
 
                         // Next we store the photo into the real-time database for just that user so we can just pull that user's photos...
                         databasePhoto = FirebaseDatabase.getInstance().getReference("userphotos").child(auth.getCurrentUser().getUid().toString());
-                        UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s);
+                        UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
                         databasePhoto.child(UID).setValue(nphoto);
 
                         progressDialog.dismiss();

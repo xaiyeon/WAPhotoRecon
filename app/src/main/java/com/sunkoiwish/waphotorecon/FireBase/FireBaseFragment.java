@@ -132,9 +132,11 @@ public class FireBaseFragment extends Fragment {
                 viewHolder.txtname.setText(auth.getCurrentUser().getDisplayName());
                 viewHolder.txtdate.setText(model.getPhoto_create_date());
                 viewHolder.txtloc.setText(model.getLocation_name()); // where is it
-                viewHolder.txtdesc.setText(model.getPhoto_description());
+                viewHolder.txtdesc.setText("Description: " + model.getPhoto_description());
                 viewHolder.txtimgname.setText(model.getPhotoName());
                 Picasso.with(getContext()).load(model.getImgdata_url()).into(viewHolder.imgUsersimg);
+                viewHolder.txtdevicename.setText("Device: " + model.getDevice_name());
+                viewHolder.txtanalyzed.setText("Is Analyzed?: " + model.getIsAnalyzed()); // is true or false
 
 
             }
@@ -206,6 +208,8 @@ public class FireBaseFragment extends Fragment {
         TextView txtimgname;
         TextView txtdesc;
         ImageView imgUsersimg;
+        TextView txtdevicename;
+        TextView txtanalyzed;
 
         public UserImageViewHolder(View itemView){
             super(itemView);
@@ -215,6 +219,8 @@ public class FireBaseFragment extends Fragment {
             txtimgname = (TextView) itemView.findViewById(R.id.layout_imgname);
             txtdesc = (TextView) itemView.findViewById(R.id.layout_description);
             imgUsersimg = (ImageView) itemView.findViewById(R.id.layout_userimage);
+            txtdevicename = (TextView) itemView.findViewById(R.id.layout_devicename);
+            txtanalyzed = (TextView) itemView.findViewById(R.id.layout_isanalyzed);
         }
 
 

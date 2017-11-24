@@ -15,13 +15,14 @@ public class UserPhoto {
     private String location_name;
     private String photo_description;
     private String photo_create_date;
+    private String device_name; // used for the name of the device...
     private String isAnalyzed; // used for checking if photo has been analyzed already or not
     // false or true, all initial photos are set to false.
 
     public UserPhoto() {
     }
 
-    public UserPhoto(String user_photo_id, String user_id, String user_name, String photoName, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date) {
+    public UserPhoto(String user_photo_id, String user_id, String user_name, String photoName, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date, String device_name, String isAnalyzed) {
         this.user_photo_id = user_photo_id;
         this.user_id = user_id;
         this.user_name = user_name;
@@ -31,6 +32,8 @@ public class UserPhoto {
         this.location_name = location_name;
         this.photo_description = photo_description;
         this.photo_create_date = photo_create_date;
+        this.device_name = device_name;
+        this.isAnalyzed = isAnalyzed;
     }
 
     public String getUser_photo_id() {
@@ -105,6 +108,22 @@ public class UserPhoto {
         this.photo_create_date = photo_create_date;
     }
 
+    public String getDevice_name() {
+        return device_name;
+    }
+
+    public void setDevice_name(String device_name) {
+        this.device_name = device_name;
+    }
+
+    public String getIsAnalyzed() {
+        return isAnalyzed;
+    }
+
+    public void setIsAnalyzed(String isAnalyzed) {
+        this.isAnalyzed = isAnalyzed;
+    }
+
     @Override
     public String toString() {
         return "UserPhoto{" +
@@ -117,6 +136,8 @@ public class UserPhoto {
                 ", location_name='" + location_name + '\'' +
                 ", photo_description='" + photo_description + '\'' +
                 ", photo_create_date='" + photo_create_date + '\'' +
+                ", device_name='" + device_name + '\'' +
+                ", isAnalyzed='" + isAnalyzed + '\'' +
                 '}';
     }
 }

@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragimg_firstlay"
+        android:background="@color/white"
         >
 
 
@@ -29,13 +30,16 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/fragimg_thirdlay"
         android:layout_below="@+id/fragimg_seclay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/fragimg_preseclay"
+            >
 
             <Button
                 android:id="@+id/fragimg_submitbtn"
@@ -48,13 +52,25 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragimg_preseclay"
+            android:background="@color/white"
+            >
 
             <TextView
                 android:id="@+id/fragimg_desctxtview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="description" />
+
+            <TextView
+                android:id="@+id/fragimg_faceage_txtview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="faces, age"
+                android:paddingTop="50dp"
+                />
+
         </RelativeLayout>
 
 
@@ -62,5 +78,42 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_below="@+id/fragimg_thirdlay"
+        android:id="@+id/fragimg_fourthlay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/fragimg_fourlaybutlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:text="Submit URL from FireBase First Image"
+                android:id="@+id/fragimg_urlimageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_below="@+id/fragimg_fourlaybutlay"
+            android:id="@+id/fragimg_fourlaytextlay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:text="url description"
+                android:id="@+id/fragimg_urlImageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -46,10 +46,43 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_userphotos_2a"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:layout_below="@+id/layout_userphotos_2"
+            >
+
+            <TextView
+                android:id="@+id/layout_devicename"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_2b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:layout_below="@+id/layout_userphotos_2a"
+            >
+            <TextView
+                android:id="@+id/layout_isanalyzed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Is analyzed? true or false"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/layout_userphotos_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_userphotos_2"
+        android:layout_below="@+id/layout_userphotos_2b"
             >
 
             <ImageView

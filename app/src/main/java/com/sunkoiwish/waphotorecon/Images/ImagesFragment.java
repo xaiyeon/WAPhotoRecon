@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
@@ -30,6 +31,12 @@ import org.w3c.dom.Text;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+
+import com.microsoft.projectoxford.face.*;
+import com.microsoft.projectoxford.face.contract.*;
+
+// TODO: Implement the Face API and make layout for Face data and request URLs or data from users...
+//
 
 /**
  * A simple {@link Fragment} subclass.
@@ -64,8 +71,10 @@ public class ImagesFragment extends Fragment {
      */
 
     // My subscription key for microsoft cog service
-
-    VisionServiceRestClient visionServiceRestClient = new VisionServiceRestClient("c8fc6c87dde64e5888e49d65cf3d2569", "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0");
+    // If expire use new keys...
+            // old key: c8fc6c87dde64e5888e49d65cf3d2569
+            // new key: 5d4298ebea2842148d97033a7fe95a61
+    VisionServiceRestClient visionServiceRestClient = new VisionServiceRestClient("5d4298ebea2842148d97033a7fe95a61", "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0");
 
     // view widgets
     ImageView imageView;
@@ -131,94 +140,110 @@ public class ImagesFragment extends Fragment {
             @Override
             public void onClick(final View v) {
 
-                Log.d(TAG, "buttonClickMicrosoft: Button pressed.");
-                // Here we have an async tasks that will return our results from Microsoft
-                final AsyncTask<InputStream, String, String> visionTask = new AsyncTask<InputStream, String, String>() {
+                try {
 
-                    ProgressDialog prgDialog = new ProgressDialog(getContext());
-                    @Override
-                    protected String doInBackground(InputStream... params) {
-                        try {
-                            // Progress dialog
-                            publishProgress("Recognizing...");
-                            // we add what features we want.
-                            // TODO: Implement the other information from the json file
-                            // String array of list of features I want in JSON object
-                            String[] features = {"Description","Tags","ImageType", "Color", "Faces", "Adult", "Categories"};
-                            String[] details = {};
-                            AnalysisResult result = visionServiceRestClient.analyzeImage(params[0], features, details);
+                    Log.d(TAG, "buttonClickMicrosoft: Button pressed.");
 
-                            // This stores the gotten data into a string that is of Gson
-                            String strResult = new Gson().toJson(result);
+                    // Here we have an async tasks that will return our results from Microsoft
+                    final AsyncTask<InputStream, String, String> visionTask = new AsyncTask<InputStream, String, String>() {
 
-                            Log.d(TAG, strResult);
-                            return strResult;
+                        ProgressDialog prgDialog = new ProgressDialog(getContext());
+                        @Override
+                        protected String doInBackground(InputStream... params) {
+                            try {
+                                // Progress dialog
+                                publishProgress("Recognizing...");
+                                // we add what features we want.
+                                // TODO: Implement the other information from the json file
+                                // String array of list of features I want in JSON object
+                                String[] features = {"Description","Tags","ImageType", "Color", "Faces", "Adult", "Categories"};
+                                String[] details = {};
+                                AnalysisResult result = visionServiceRestClient.analyzeImage(params[0], features, details);
 
-                        } catch (Exception e){
-                            return null;
+                                // This stores the gotten data into a string that is of Gson
+                                String strResult = new Gson().toJson(result);
+
+                                Log.d(TAG, strResult);
+                                return strResult;
+
+                            } catch (Exception e){
+                                Toast.makeText(getActivity(), "The service is down or key is expired!", Toast.LENGTH_LONG).show();
+                                return null;
+                            }
                         }
-                    }
 
-                    // genereated code below, alt + inst Override, for the task execution
-                    @Override
-                    protected void onPreExecute() {
-                        prgDialog.show();
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        prgDialog.dismiss();
-
-                        // Convert back the string to object.
-                        AnalysisResult result = new Gson().fromJson(s, AnalysisResult.class);
-                        // had to declare as final View
-                        desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
-                        age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
-
-                        StringBuilder desc_SB = new StringBuilder();
-                        StringBuilder faceage_SB = new StringBuilder();
-
-                        // Just for description caption...
-                        for(Tag tag:result.tags)
-                        {
-                            desc_SB.append(tag.name);
+                        // genereated code below, alt + inst Override, for the task execution
+                        @Override
+                        protected void onPreExecute() {
+                            prgDialog.show();
                         }
-                        desc_txtView.setText(desc_SB);
 
-                        // TODO: Confused on above and here...
-                        //for(Face face:result.faces.)
+                        @Override
+                        protected void onPostExecute(String s) {
+                            prgDialog.dismiss();
 
-//                        StringBuilder stringBuilder = new StringBuilder();
-//
-//                        // Added this for faces stringBuilder
-//                        StringBuilder facestringBuilder = new StringBuilder();
-//                        // String Face;
-//
-//                        // age
-//                        for(Face face:result.faces){
-//                            facestringBuilder.append(face.age);
-//                        }
-//                        age_txtView.setText(facestringBuilder);
-//
-//
-//                        // description
-//                        for(Caption caption:result.description.captions){
-//                            stringBuilder.append(caption.text);
-//                        }
-//                        // Set our description here
-//                        desc_txtView.setText(stringBuilder);
+                            // Convert back the string to object.
+                            AnalysisResult result = new Gson().fromJson(s, AnalysisResult.class);
+                            // had to declare as final View
+                            desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
+                            age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
 
+                            StringBuilder desc_SB = new StringBuilder();
+                            StringBuilder faceage_SB = new StringBuilder();
+
+                            // Just for description caption...
+                            for(Tag tag:result.tags)
+                            {
+                                desc_SB.append(tag.name + ", ");
+                            }
+                            desc_txtView.setText(desc_SB);
+
+                            // TODO: Confused on above and here...
+                            //for(Face face:result.faces.)
+
+    //                        StringBuilder stringBuilder = new StringBuilder();
+    //
+    //                        // Added this for faces stringBuilder
+    //                        StringBuilder facestringBuilder = new StringBuilder();
+    //                        // String Face;
+    //
+    //                        // age
+    //                        for(Face face:result.faces){
+    //                            facestringBuilder.append(face.age);
+    //                        }
+    //                        age_txtView.setText(facestringBuilder);
+    //
+    //
+    //                        // description
+    //                        for(Caption caption:result.description.captions){
+    //                            stringBuilder.append(caption.text);
+    //                        }
+    //                        // Set our description here
+    //                        desc_txtView.setText(stringBuilder);
+
+                        }
+
+                        @Override
+                        protected void onProgressUpdate(String... values) {
+                            prgDialog.setMessage(values[0]);
+                        }
+                    };
+
+                    try {
+
+                        // Now we just execute it
+                        Log.d(TAG, "buttonClickMicrosoft: Analysis complete!");
+                        visionTask.execute(inputStream);
+                    } catch (Exception e){
+                        Toast.makeText(getActivity(), "The service is down or key is expired!", Toast.LENGTH_LONG).show();
                     }
 
-                    @Override
-                    protected void onProgressUpdate(String... values) {
-                        prgDialog.setMessage(values[0]);
-                    }
-                };
 
-                // Now we just execute it
-                Log.d(TAG, "buttonClickMicrosoft: Analysis complete!");
-                visionTask.execute(inputStream);
+                } catch (Exception e){
+
+                    Toast.makeText(getActivity(), "The service is down or key is expired!", Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });

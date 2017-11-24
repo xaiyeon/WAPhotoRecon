@@ -114,7 +114,7 @@ public class HomeActivity extends FragmentActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.ic_house:
-                    fragmentTransaction.replace(R.id.center_main_container, new HomeFragment()).commit();
+                    fragmentTransaction.replace(R.id.main_center_content, new HomeFragment()).commit();
                     return true;
 
                 case R.id.ic_cloud:
