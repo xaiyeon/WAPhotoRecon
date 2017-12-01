@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WAPhotoRecon</string>
 
+    <string name="ms_face_api">b50c03b4bb8a4608826e2dcc2fb1cec8</string>
     <!-- Fragment Names -->
 
 

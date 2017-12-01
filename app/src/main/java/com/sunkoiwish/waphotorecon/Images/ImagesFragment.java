@@ -4,9 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.icu.text.MessageFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,19 +23,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.microsoft.projectoxford.face.contract.Face;
+import com.microsoft.projectoxford.face.rest.ClientException;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
-import com.microsoft.projectoxford.vision.contract.AnalysisResult;
-import com.microsoft.projectoxford.vision.contract.Caption;
-import com.microsoft.projectoxford.vision.contract.Face;
-import com.microsoft.projectoxford.vision.contract.Tag;
+import com.microsoft.projectoxford.vision.contract.*;
 import com.sunkoiwish.waphotorecon.R;
 
 import org.w3c.dom.Text;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 
 import com.microsoft.projectoxford.face.*;
 import com.microsoft.projectoxford.face.contract.*;
@@ -76,6 +82,9 @@ public class ImagesFragment extends Fragment {
             // new key: 5d4298ebea2842148d97033a7fe95a61
     VisionServiceRestClient visionServiceRestClient = new VisionServiceRestClient("5d4298ebea2842148d97033a7fe95a61", "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0");
 
+    // Face API
+    FaceServiceClient faceServiceClient = new FaceServiceRestClient("https://westcentralus.api.cognitive.microsoft.com/face/v1.0", "b50c03b4bb8a4608826e2dcc2fb1cec8");
+
     // view widgets
     ImageView imageView;
     Button mbutton;
@@ -120,7 +129,8 @@ public class ImagesFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_images, container, false);
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.sad_test);
+        // setting our test image
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.devin_boy);
         // fINDING OUR view objects
 
         imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
@@ -145,7 +155,7 @@ public class ImagesFragment extends Fragment {
                     Log.d(TAG, "buttonClickMicrosoft: Button pressed.");
 
                     // Here we have an async tasks that will return our results from Microsoft
-                    final AsyncTask<InputStream, String, String> visionTask = new AsyncTask<InputStream, String, String>() {
+                     AsyncTask<InputStream, String, String> visionTask = new AsyncTask<InputStream, String, String>() {
 
                         ProgressDialog prgDialog = new ProgressDialog(getContext());
                         @Override
@@ -232,8 +242,10 @@ public class ImagesFragment extends Fragment {
                     try {
 
                         // Now we just execute it
-                        Log.d(TAG, "buttonClickMicrosoft: Analysis complete!");
+
                         visionTask.execute(inputStream);
+                        Log.d(TAG, "buttonClickMicrosoft: Analysis complete!");
+
                     } catch (Exception e){
                         Toast.makeText(getActivity(), "The service is down or key is expired!", Toast.LENGTH_LONG).show();
                     }
@@ -244,11 +256,149 @@ public class ImagesFragment extends Fragment {
                     Toast.makeText(getActivity(), "The service is down or key is expired!", Toast.LENGTH_LONG).show();
                 }
 
+                // Next is the Face API, call
+                // We need to wait some seconds and such.
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        Toast.makeText(getActivity(), "Now Running FaceAPI! ...", Toast.LENGTH_LONG).show();
+                        // Actions to do after 3 seconds
+                        // This is still a test, but this is our sat_test.jpg
+
+                        FaceDetectionFun(bitmap, view);
+                    }
+                }, 3000);
 
             }
         });
 
         return view;
+    }
+
+    // Face API method, I also pass the current view for setting the text for age and gender.
+    private void FaceDetectionFun(final Bitmap a_bitmap, final View v) {
+
+        Log.d(TAG, "FaceAPI: Starting...");
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        a_bitmap.compress(Bitmap.CompressFormat.JPEG,100,outputStream);
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
+        final AsyncTask<InputStream, String, com.microsoft.projectoxford.face.contract.Face[]> detectTask = new AsyncTask<InputStream, String, com.microsoft.projectoxford.face.contract.Face[]>() {
+            private ProgressDialog progress2 = new ProgressDialog(getContext());
+
+            // Post
+
+
+            @Override
+            protected void onPostExecute(com.microsoft.projectoxford.face.contract.Face[] faces) {
+                // After
+                progress2.dismiss();
+                if (faces == null) return;
+
+                imageView.setImageBitmap(drawFaceRecOnBitmap(a_bitmap, faces, v));
+            }
+
+            @Override
+            protected void onPreExecute() {
+                Log.d(TAG, "FaceAPI: PreExecute...");
+                super.onPreExecute();
+                progress2.show();
+
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                super.onProgressUpdate(values);
+                progress2.setMessage(values[0]);
+            }
+
+            @Override
+            protected com.microsoft.projectoxford.face.contract.Face[] doInBackground(InputStream... params) {
+                publishProgress("Detecing doinBackground, FaceAPI...");
+                Log.d(TAG, "Do in background starting, faceapi");
+                try {
+
+                    com.microsoft.projectoxford.face.contract.Face[] result = faceServiceClient.detect(params[0], true, false,
+                            new FaceServiceClient.FaceAttributeType[] {
+                                    FaceServiceClient.FaceAttributeType.Age,
+                                    FaceServiceClient.FaceAttributeType.Gender,
+                                    FaceServiceClient.FaceAttributeType.FacialHair,
+                                    FaceServiceClient.FaceAttributeType.Smile,
+                                    FaceServiceClient.FaceAttributeType.HeadPose,
+                                }
+                            );
+                    if(result == null){
+                        Log.d(TAG, "Do in background nothing found, faceapi");
+                        publishProgress("Detection, FaceAPI, Nothing was found.");
+                        return null;
+
+                    }
+                    publishProgress(String.format("Detection Finished. %d face(s) detected.", result.length));
+                    return result;
+
+
+                }
+                catch (Exception e){
+                    Log.d(TAG, "Fail on FaceAPI asynctask...");
+                    return null;
+                }
+
+            }
+        };
+
+        // execute the face api
+        detectTask.execute(inputStream);
+
+
+    }
+
+    // This is Face contract NOT vision
+    public Bitmap drawFaceRecOnBitmap(Bitmap a_bitmap, com.microsoft.projectoxford.face.contract.Face[] faces, View v) {
+
+        Log.d(TAG, "drawFaceRecOnBitmap: FaceAPI");
+
+        Bitmap new_bitmap = a_bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(new_bitmap);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.RED);
+        float strokewidth = 12;
+        paint.setStrokeWidth(strokewidth);
+        if(faces != null){
+            boolean checker = false;
+            // This checks the JSON file and we can draw rectangles. We can also do other data
+            // And save data to a list, and upload the new image and such as that.
+            // TODO: Make a new model for analyzed user images.
+            for(com.microsoft.projectoxford.face.contract.Face face:faces){
+
+                com.microsoft.projectoxford.face.contract.FaceRectangle faceRectangle = face.faceRectangle;
+                canvas.drawRect(faceRectangle.left,
+                        faceRectangle.top,
+                        faceRectangle.left + faceRectangle.width,
+                        faceRectangle.top + faceRectangle.height,
+                        paint
+                        );
+
+                Log.d(TAG, "Found info and drawing...: FaceAPI");
+                // Show Face Details
+                // we also set our data to description...
+                StringBuilder face_age_SB = new StringBuilder();
+                face_age_SB.append("Age: " + face.faceAttributes.age + ", ");
+                face_age_SB.append("Gender: " + face.faceAttributes.gender + ", ");
+                face_age_SB.append("Smile: " + face.faceAttributes.smile);
+                age_txtView = (TextView) v.findViewById(R.id.fragimg_faceage_txtview);
+                age_txtView.setText(face_age_SB);
+
+            }
+        if(!checker){
+            Log.d(TAG, "drawFaceRecOnBitmap: FaceAPI, No face was found!");
+        }
+
+        }
+        return new_bitmap;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
