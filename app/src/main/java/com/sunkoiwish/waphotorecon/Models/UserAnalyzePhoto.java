@@ -10,7 +10,7 @@ package com.sunkoiwish.waphotorecon.Models;
     // Maybe look for a java library for turning JSON into Java class model
 public class UserAnalyzePhoto {
 
-    private String userAnalyze_photo_id; // primary key
+    private String user_analyze_photo_id; // primary key
     private String user_id; // foreign key, from user auth
     private String photo_id; // foreign key, from photo database
     // below is basically Strings from the JSON object.

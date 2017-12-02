@@ -22,12 +22,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.face.contract.Face;
 import com.microsoft.projectoxford.face.rest.ClientException;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.*;
+import com.microsoft.projectoxford.vision.rest.VisionServiceException;
+import com.sunkoiwish.waphotorecon.Models.UserPhoto;
 import com.sunkoiwish.waphotorecon.R;
 
 import org.w3c.dom.Text;
@@ -37,6 +46,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import com.microsoft.projectoxford.face.*;
 import com.microsoft.projectoxford.face.contract.*;
@@ -67,7 +77,12 @@ public class ImagesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    // Define FireBase
+    private FirebaseApp app;
+    private FirebaseAuth auth;
 
+    // An arrayList of our objects...
+    final ArrayList<UserPhoto> fromDatabase_AL = new ArrayList<UserPhoto>();
     /**
      * Here we will test and try Microsoft Cognitive Services
      * for analyze image
@@ -90,6 +105,7 @@ public class ImagesFragment extends Fragment {
     Button mbutton;
     TextView desc_txtView;
     TextView age_txtView;
+    Button fburlbutton;
 
     public ImagesFragment() {
         // Required empty public constructor
@@ -126,24 +142,61 @@ public class ImagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Firebase instances
+        app = FirebaseApp.getInstance();
+        auth = FirebaseAuth.getInstance(app);
+
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_images, container, false);
 
         // setting our test image
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.devin_boy);
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.young_boy);
         // fINDING OUR view objects
 
         imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
         mbutton = (Button) view.findViewById(R.id.fragimg_submitbtn);
         desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
         age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
-
+        fburlbutton = (Button) view.findViewById(R.id.fragimg_urlimageButton);
         imageView.setImageBitmap(bitmap);
 
         // Convert the image to stream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
+
+        // The URL button
+        fburlbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "URL Button: onClick Pressed.");
+                // Lets use our database firebase reference first...
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference userphotoRef = database.getReference("userphotos").child(auth.getUid());
+                userphotoRef.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds: dataSnapshot.getChildren()){
+
+                            UserPhoto userPhoto = ds.getValue(UserPhoto.class);
+                            //Log.d(TAG, "Here is your data: " + userPhoto);
+                            fromDatabase_AL.add(userPhoto);
+                            // for one right now.
+                            url_AnalyzeImage(view);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), "The FireBase Service is experiencing difficulties!", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+            }
+        });
 
         // our button click
         mbutton.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +251,7 @@ public class ImagesFragment extends Fragment {
                             desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
                             age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
 
+                            // We can build strings for the other parts of it as well...
                             StringBuilder desc_SB = new StringBuilder();
                             StringBuilder faceage_SB = new StringBuilder();
 
@@ -210,26 +264,6 @@ public class ImagesFragment extends Fragment {
 
                             // TODO: Confused on above and here...
                             //for(Face face:result.faces.)
-
-    //                        StringBuilder stringBuilder = new StringBuilder();
-    //
-    //                        // Added this for faces stringBuilder
-    //                        StringBuilder facestringBuilder = new StringBuilder();
-    //                        // String Face;
-    //
-    //                        // age
-    //                        for(Face face:result.faces){
-    //                            facestringBuilder.append(face.age);
-    //                        }
-    //                        age_txtView.setText(facestringBuilder);
-    //
-    //
-    //                        // description
-    //                        for(Caption caption:result.description.captions){
-    //                            stringBuilder.append(caption.text);
-    //                        }
-    //                        // Set our description here
-    //                        desc_txtView.setText(stringBuilder);
 
                         }
 
@@ -273,7 +307,74 @@ public class ImagesFragment extends Fragment {
         });
 
         return view;
+
+    } // End of onCreate View
+
+    // This is for our URL, need to pass the view in
+    private void url_AnalyzeImage(final View view){
+
+         AsyncTask<String, String, String> url_visionTask = new AsyncTask<String, String, String>() {
+             ProgressDialog progressDialog3 = new ProgressDialog(getContext());
+
+            @Override
+            protected String doInBackground(String... strings) {
+                // Progress dialog
+                publishProgress("From URL Recognizing...");
+                // We can use
+                Log.d(TAG, "buttonClickUsing URL: Analyze Image using URL.");
+                try {
+                    String[] url_features = {"Description","Tags","ImageType", "Color", "Faces", "Adult", "Categories"};
+                    String[] url_details = {};
+                    AnalysisResult url_result = visionServiceRestClient.analyzeImage(fromDatabase_AL.get(0).getImgdata_url().toString(), url_features , url_details);
+                    Log.d(TAG, "buttonClickUsing URL: analyze image URL working...");
+                    // This stores the gotten data into a string that is of Gson
+                    String url_strResult = new Gson().toJson(url_result);
+
+                    Log.d(TAG, url_strResult);
+                    return url_strResult;
+
+                } catch (VisionServiceException e) {
+                    Toast.makeText(getActivity(), "The Image API Service is experiencing difficulties!", Toast.LENGTH_LONG).show();
+                    Log.d(TAG,"URL button Image API: Failure at RestClient");
+                    return null;
+                }
+            }
+
+            @Override
+            protected void onPreExecute() {
+                progressDialog3.show();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                // Now this is where we collect the results and stuff!
+                progressDialog3.dismiss();
+                // Convert back the string to object.
+                AnalysisResult result = new Gson().fromJson(s, AnalysisResult.class);
+                // had to declare as final View
+                desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
+                age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
+
+                // We can build strings for the other parts of it as well...
+                StringBuilder desc_SB = new StringBuilder();
+                StringBuilder faceage_SB = new StringBuilder();
+
+                // Just for description caption...
+                for(Tag tag:result.tags)
+                {
+                    desc_SB.append("From URL: " + tag.name + ", ");
+                }
+                desc_txtView.setText(desc_SB);
+            }
+
+            @Override
+            protected void onProgressUpdate(String... values) {
+                progressDialog3.setMessage(values[0]);
+            }
+        };
+
     }
+
 
     // Face API method, I also pass the current view for setting the text for age and gender.
     private void FaceDetectionFun(final Bitmap a_bitmap, final View v) {

@@ -133,10 +133,10 @@ public class FireBaseFragment extends Fragment {
                 viewHolder.txtdate.setText(model.getPhoto_create_date());
                 viewHolder.txtloc.setText(model.getLocation_name()); // where is it
                 viewHolder.txtdesc.setText("Description: " + model.getPhoto_description());
-                viewHolder.txtimgname.setText(model.getPhotoName());
+                viewHolder.txtimgname.setText(model.getPhoto_name());
                 Picasso.with(getContext()).load(model.getImgdata_url()).into(viewHolder.imgUsersimg);
                 viewHolder.txtdevicename.setText("Device: " + model.getDevice_name());
-                viewHolder.txtanalyzed.setText("Is Analyzed?: " + model.getIsAnalyzed()); // is true or false
+                viewHolder.txtanalyzed.setText("Is Analyzed?: " + model.getIs_analyzed()); // is true or false
 
 
             }
