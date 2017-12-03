@@ -3,18 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/homeText"
+    <RelativeLayout
+        android:id="@+id/fragblog_top"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="16"
-        android:fontFamily="sans-serif"
-        android:inputType="none"
-        android:lineSpacingExtra="8sp"
-        android:text="Welcome to BeagleBoneBlack W Log!"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:typeface="normal" />
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/homeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="16"
+            android:fontFamily="sans-serif"
+            android:inputType="none"
+            android:lineSpacingExtra="8sp"
+            android:text="Your Systems Device Log"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:typeface="normal" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/fragblog_top"
+        android:id="@+id/fragblog_fb_1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/FireBaseDBSysLog_RecView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="50dp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/fragblog_fb_2"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/fragblog_fb_1"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        >
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

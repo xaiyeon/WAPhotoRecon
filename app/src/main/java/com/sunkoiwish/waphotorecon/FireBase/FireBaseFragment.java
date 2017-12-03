@@ -145,16 +145,12 @@ public class FireBaseFragment extends Fragment {
         // now we set it, and it populates!
         rec_view.setAdapter(firebaseRecyclerAdapter);
 
-
-        // TO:DO
         // TODO: Fix this recyle view trash for fire base real time database
 
        // FirebaseRecyclerOptions<Photo> options =
        //         new FirebaseRecyclerOptions.Builder<Photo>()
        //                 .setQuery(query, Photo.class)
        //                 .build();
-
-
 
         return view;
     }

@@ -151,7 +151,7 @@ public class ImagesFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_images, container, false);
 
         // setting our test image
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.young_boy);
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bikini_girl);
         // fINDING OUR view objects
 
         imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
@@ -175,11 +175,11 @@ public class ImagesFragment extends Fragment {
                 // Lets use our database firebase reference first...
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference userphotoRef = database.getReference("userphotos").child(auth.getUid());
-                userphotoRef.addValueEventListener(new ValueEventListener() {
+                userphotoRef.addListenerForSingleValueEvent(new ValueEventListener() {
 
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot ds: dataSnapshot.getChildren()){
+                        for (DataSnapshot ds : dataSnapshot.getChildren()){
 
                             UserPhoto userPhoto = ds.getValue(UserPhoto.class);
                             //Log.d(TAG, "Here is your data: " + userPhoto);

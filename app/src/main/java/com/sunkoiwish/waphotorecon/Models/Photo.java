@@ -22,6 +22,7 @@ public class Photo {
     public Photo() {
     }
 
+    // This is the one we follow for the Python3 model code
     public Photo(String photo_id, String user_id, String user_name, String photo_name, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date, String device_name, String is_analyzed) {
         this.photo_id = photo_id;
         this.user_id = user_id;

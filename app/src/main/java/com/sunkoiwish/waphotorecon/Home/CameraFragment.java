@@ -48,6 +48,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sunkoiwish.waphotorecon.Models.Photo;
+import com.sunkoiwish.waphotorecon.Models.SysMessage;
 import com.sunkoiwish.waphotorecon.Models.UserPhoto;
 import com.sunkoiwish.waphotorecon.R;
 import com.sunkoiwish.waphotorecon.Utils.ImageFixer;
@@ -111,6 +112,7 @@ public class CameraFragment extends Fragment {
     private StorageReference mstorageReference;
     // database base on Photo class
     private DatabaseReference databasePhoto;
+    private DatabaseReference databaseSysMessage;
 
     // Here we will do the location and geocoder stuff
     Geocoder geocoder;
@@ -128,8 +130,9 @@ public class CameraFragment extends Fragment {
 
         // Connect to firebase cloud storage
         mstorageReference = FirebaseStorage.getInstance().getReference();
-        // Database reference for our Photo
+        // Database reference for our Photo, this is default
         databasePhoto = FirebaseDatabase.getInstance().getReference("allphotos");
+        databaseSysMessage = FirebaseDatabase.getInstance().getReference("usersmessagelog");
 
         // need to use for permissions
         final CameraFragment cameraFragment = this;
@@ -301,16 +304,26 @@ public class CameraFragment extends Fragment {
 
                         // Now we have everything we need to store on real-time database according to our model class.
                         // Photo does not include is analyzed or
-                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
+
+                        // Upload our system message first to log
+                        String sysmessage = "Photo taken on Android Application using UID: " +  auth.getCurrentUser().getUid().toString();
+                        // Now we do a system message upload first.
+                        SysMessage nsysmessage = new SysMessage(UID, auth.getCurrentUser().getUid().toString(), sysmessage, user_device_name, "true", date_time_s);
+                        databaseSysMessage = FirebaseDatabase.getInstance().getReference("usermessagelogs").child(auth.getCurrentUser().getUid().toString());
+                        databaseSysMessage.child(UID).setValue(nsysmessage);
 
                         // Now to store into our database!! Now it's in our real-time database
+                        // For all photos
+                        databasePhoto = FirebaseDatabase.getInstance().getReference("allphotos");
+                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
                         // This is for ALL THE PHOTOS
                         databasePhoto.child(UID).setValue(nphoto);
 
                         // Next we store the photo into the real-time database for just that user so we can just pull that user's photos...
                         databasePhoto = FirebaseDatabase.getInstance().getReference("userphotos").child(auth.getCurrentUser().getUid().toString());
+                        //UserPhoto model isn't used here it is Photo model!
                         UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
-                        databasePhoto.child(UID).setValue(nphoto);
+                        databasePhoto.child(UID).setValue(userPhoto);
 
                         progressDialog.dismiss();
                         Toast.makeText(getActivity(), "Upload Success to Real-Time Database!", Toast.LENGTH_LONG).show();

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+
+    >
+
+    <RelativeLayout
+        android:id="@+id/lay_sysmes1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lay_sysmes_txtviewdevicename"
+            android:layout_marginRight="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello Device Name"
+            />
+
+        <TextView
+            android:id="@+id/lay_sysmes_createdate"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_sysmes2"
+        android:layout_below="@+id/lay_sysmes1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/lay_sysmes_txtviewmessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="A message."
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lay_botpad"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/lay_sysmes2"
+        android:layout_height="15dp"
+        >
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
