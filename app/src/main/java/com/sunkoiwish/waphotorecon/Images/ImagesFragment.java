@@ -13,6 +13,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +39,9 @@ import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
 import com.microsoft.projectoxford.vision.contract.*;
 import com.microsoft.projectoxford.vision.rest.VisionServiceException;
+import com.squareup.picasso.Picasso;
+import com.sunkoiwish.waphotorecon.FireBase.FireBaseFragment;
+import com.sunkoiwish.waphotorecon.Models.UserAnalyzePhoto;
 import com.sunkoiwish.waphotorecon.Models.UserPhoto;
 import com.sunkoiwish.waphotorecon.R;
 
@@ -81,6 +87,10 @@ public class ImagesFragment extends Fragment {
     private FirebaseApp app;
     private FirebaseAuth auth;
 
+    // Define the photos Firebase DatabaseReference
+    private DatabaseReference database_user_analyzed_photos;
+
+
     // An arrayList of our objects...
     final ArrayList<UserPhoto> fromDatabase_AL = new ArrayList<UserPhoto>();
     /**
@@ -106,6 +116,10 @@ public class ImagesFragment extends Fragment {
     TextView desc_txtView;
     TextView age_txtView;
     Button fburlbutton;
+
+    // Our layouts
+    RecyclerView rec_view;
+    private LinearLayoutManager mLayoutManager;
 
     public ImagesFragment() {
         // Required empty public constructor
@@ -151,16 +165,13 @@ public class ImagesFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_images, container, false);
 
         // setting our test image
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bikini_girl);
+        //final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bikini_girl);
         // fINDING OUR view objects
 
-        imageView = (ImageView) view.findViewById(R.id.fragimg_imageView);
-        mbutton = (Button) view.findViewById(R.id.fragimg_submitbtn);
-        desc_txtView = (TextView) view.findViewById(R.id.fragimg_desctxtview);
-        age_txtView = (TextView) view.findViewById(R.id.fragimg_faceage_txtview);
-        fburlbutton = (Button) view.findViewById(R.id.fragimg_urlimageButton);
-        imageView.setImageBitmap(bitmap);
+        // get from out database of the userphotos photos
+        database_user_analyzed_photos = FirebaseDatabase.getInstance().getReference("useranalyzedphotos").child(auth.getCurrentUser().getUid().toString());
 
+        /**
         // Convert the image to stream
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
@@ -182,8 +193,7 @@ public class ImagesFragment extends Fragment {
                         for (DataSnapshot ds : dataSnapshot.getChildren()){
 
                             UserPhoto userPhoto = ds.getValue(UserPhoto.class);
-                            //Log.d(TAG, "Here is your data: " + userPhoto);
-                            fromDatabase_AL.add(userPhoto);
+                            Log.d(TAG, "Here is your data: " + userPhoto);
                             // for one right now.
                             url_AnalyzeImage(view);
                         }
@@ -204,9 +214,7 @@ public class ImagesFragment extends Fragment {
             public void onClick(final View v) {
 
                 try {
-
                     Log.d(TAG, "buttonClickMicrosoft: Button pressed.");
-
                     // Here we have an async tasks that will return our results from Microsoft
                      AsyncTask<InputStream, String, String> visionTask = new AsyncTask<InputStream, String, String>() {
 
@@ -276,7 +284,6 @@ public class ImagesFragment extends Fragment {
                     try {
 
                         // Now we just execute it
-
                         visionTask.execute(inputStream);
                         Log.d(TAG, "buttonClickMicrosoft: Analysis complete!");
 
@@ -305,6 +312,47 @@ public class ImagesFragment extends Fragment {
 
             }
         });
+        */
+        // End of commented out code, that was use for testing purposes
+
+        // Now set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        rec_view = (RecyclerView) view.findViewById(R.id.FireBaseDB_RecView);
+        rec_view.setLayoutManager(mLayoutManager);
+
+        // Don't need to check if we are signed in because you have to sign in...
+
+        // start firebase recylce... You must define the parameters you specified below to let it know what you doing.
+        FirebaseRecyclerAdapter<UserAnalyzePhoto, ImagesFragment.UserImageViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<UserAnalyzePhoto, ImagesFragment.UserImageViewHolder>(
+                UserAnalyzePhoto.class,
+                R.layout.layout_analyzed_userphoto,
+                ImagesFragment.UserImageViewHolder.class,
+                database_user_analyzed_photos
+        ) {
+            @Override
+            protected void populateViewHolder(ImagesFragment.UserImageViewHolder viewHolder, UserAnalyzePhoto model, int position) {
+
+                viewHolder.txtdatainfo.setText("Data Info: " + model.getSearch_date() + " " + model.getImage_status() );
+                viewHolder.txtdate.setText("Analyzed Date: " + model.getAnalyzed_date());
+                viewHolder.txtlocoord.setText("Location: " + model.getTaken_location());
+                viewHolder.txtstatus.setText("Status: " + model.getStatus());
+                viewHolder.txtdevicename.setText("Device: " + model.getDevice_name());
+                viewHolder.txttags.setText("Tags: " + model.getTags());
+                viewHolder.txtdescription.setText("Description: " + model.getDescription());
+                viewHolder.txtadultcontent.setText("Adult?: " + model.getAdult_content() + " | " + "Racy?: " + model.getRacy_content());
+                viewHolder.txt_age_gender_smile.setText("Age: " + model.getAge() + " | " + "Gender: " + model.getGender() + " | " + "Smile %: " + model.getSmile());
+
+                Picasso.with(getContext()).load(model.getAnalyzed_image_url()).into(viewHolder.imgUsersimg);
+
+
+            }
+        };
+
+        // now we set it, and it populates!
+        rec_view.setAdapter(firebaseRecyclerAdapter);
 
         return view;
 
@@ -467,8 +515,9 @@ public class ImagesFragment extends Fragment {
         paint.setColor(Color.RED);
         float strokewidth = 12;
         paint.setStrokeWidth(strokewidth);
+        boolean checker = false;
         if(faces != null){
-            boolean checker = false;
+            checker = true;
             // This checks the JSON file and we can draw rectangles. We can also do other data
             // And save data to a list, and upload the new image and such as that.
             // TODO: Make a new model for analyzed user images.
@@ -493,11 +542,12 @@ public class ImagesFragment extends Fragment {
                 age_txtView.setText(face_age_SB);
 
             }
+        }
+
         if(!checker){
             Log.d(TAG, "drawFaceRecOnBitmap: FaceAPI, No face was found!");
         }
 
-        }
         return new_bitmap;
 
     }
@@ -539,4 +589,52 @@ public class ImagesFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    // VIEWHOLDER FOR ANALYZED IMAGES
+
+    // UserImageViewHolder is used as a layout to populate for the recycler view.
+
+    public static class UserImageViewHolder extends RecyclerView.ViewHolder{
+
+        TextView txtdatainfo;
+        TextView txtdate;
+        TextView txtlocoord;
+        TextView txtstatus;
+        TextView txtdevicename;
+        TextView txttags;
+        TextView txtdescription;
+        TextView txtadultcontent;
+        TextView txt_age_gender_smile;
+
+        ImageView imgUsersimg;
+
+        public UserImageViewHolder(View itemView){
+            super(itemView);
+            txtdatainfo = (TextView) itemView.findViewById(R.id.lay_anau_datainfotxtview);
+            txtdate = (TextView) itemView.findViewById(R.id.lay_anau_analyzeddate_txtview);
+            txtlocoord = (TextView) itemView.findViewById(R.id.lay_anau_location_txtview);
+            txtstatus = (TextView) itemView.findViewById(R.id.lay_anau_status_txtview);
+            txtdevicename = (TextView) itemView.findViewById(R.id.lay_anau_devicename_txtview);
+            txttags = (TextView) itemView.findViewById(R.id.lay_anau_tags_txtview);
+            txtdescription = (TextView) itemView.findViewById(R.id.lay_anau_description_txtview);
+            txtadultcontent = (TextView) itemView.findViewById(R.id.lay_anau_isadultracy_txtview);
+            txt_age_gender_smile = (TextView) itemView.findViewById(R.id.lay_anau_agegendersmile_txtview);
+            imgUsersimg = (ImageView) itemView.findViewById(R.id.lay_anau_imageView);
+
+        }
+
+
+    } // End of UserImageViewHolder
+
+
+
+
+
+
+
+
+
+
+
 }

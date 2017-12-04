@@ -120,7 +120,6 @@ public class FireBaseFragment extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
 
-
         rec_view = (RecyclerView) view.findViewById(R.id.FireBaseDB_RecView);
         rec_view.setLayoutManager(mLayoutManager);
 
@@ -143,7 +142,9 @@ public class FireBaseFragment extends Fragment {
                 viewHolder.txtimgname.setText(model.getPhoto_name());
                 Picasso.with(getContext()).load(model.getImgdata_url()).into(viewHolder.imgUsersimg);
                 viewHolder.txtdevicename.setText("Device: " + model.getDevice_name());
-                viewHolder.txtanalyzed.setText("Is Analyzed?: " + model.getIs_analyzed()); // is true or false
+                viewHolder.txtanalyzed.setText("Analyzed?: " + model.getIs_analyzed()); // is true or false
+                viewHolder.txtloccord.setText("Location Coords: " + model.getTaken_location());
+                viewHolder.txtdatainfo.setText("Data Info: " + model.getSearch_date() + " " + model.getImage_status() );
 
 
             }
@@ -151,13 +152,6 @@ public class FireBaseFragment extends Fragment {
 
         // now we set it, and it populates!
         rec_view.setAdapter(firebaseRecyclerAdapter);
-
-        // TODO: Fix this recyle view trash for fire base real time database
-
-       // FirebaseRecyclerOptions<Photo> options =
-       //         new FirebaseRecyclerOptions.Builder<Photo>()
-       //                 .setQuery(query, Photo.class)
-       //                 .build();
 
         return view;
     }
@@ -213,6 +207,8 @@ public class FireBaseFragment extends Fragment {
         ImageView imgUsersimg;
         TextView txtdevicename;
         TextView txtanalyzed;
+        TextView txtloccord;
+        TextView txtdatainfo;
 
         public UserImageViewHolder(View itemView){
             super(itemView);
@@ -224,6 +220,8 @@ public class FireBaseFragment extends Fragment {
             imgUsersimg = (ImageView) itemView.findViewById(R.id.layout_userimage);
             txtdevicename = (TextView) itemView.findViewById(R.id.layout_devicename);
             txtanalyzed = (TextView) itemView.findViewById(R.id.layout_isanalyzed);
+            txtloccord = (TextView) itemView.findViewById(R.id.layout_locationcoord);
+            txtdatainfo = (TextView) itemView.findViewById(R.id.layout_data_info);
         }
 
 

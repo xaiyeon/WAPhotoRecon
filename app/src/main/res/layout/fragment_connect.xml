@@ -18,7 +18,7 @@
             android:fontFamily="sans-serif"
             android:inputType="none"
             android:lineSpacingExtra="8sp"
-            android:text="Sync or Analyze Images"
+            android:text="Fetch and Analyze Images"
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="20sp"
@@ -32,11 +32,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/fragcon_syncbutton"
+
+        <RelativeLayout
+            android:id="@+id/frag_conn_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sync Files" />
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+
+
+
 
     </RelativeLayout>
 
@@ -46,12 +51,92 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/fragcon_analyzebutton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Analyze Images" />
+
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragcon_infolay3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_below="@+id/fragonnect_lay2"
+        android:padding="10dp"
+        >
+
+        <RelativeLayout
+            android:id="@+id/fragcon_sublay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stats Info:"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragcon_sublay2"
+            android:layout_below="@+id/fragcon_sublay1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/fragcon_txtview_file_to_be_analyzed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Files to be analyzed: 0"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragcon_sublay3"
+            android:layout_below="@+id/fragcon_sublay2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/fragcon_sublay4"
+            android:layout_below="@+id/fragcon_sublay3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/fragcon_infolay3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/FireBaseConnect_Image_RecView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="50dp" />
+             />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragcon_infolay4"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/fragcon_infolay3"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        >
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

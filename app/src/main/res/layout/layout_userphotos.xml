@@ -63,17 +63,42 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/layout_userphotos_2b"
+            android:id="@+id/layout_userphotos_2aa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="6dp"
             android:layout_below="@+id/layout_userphotos_2a"
+            >
+
+            <TextView
+                android:id="@+id/layout_locationcoord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_userphotos_2b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:layout_below="@+id/layout_userphotos_2aa"
             >
             <TextView
                 android:id="@+id/layout_isanalyzed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Is analyzed? true or false"
+                />
+
+            <TextView
+                android:id="@+id/layout_data_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Data Info: "
+                android:gravity="right"
                 />
 
         </RelativeLayout>

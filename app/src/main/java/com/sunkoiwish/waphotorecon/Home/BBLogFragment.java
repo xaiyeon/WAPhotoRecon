@@ -75,6 +75,7 @@ public class BBLogFragment extends Fragment{
                 viewHolder.txt_device_name.setText(model.getDevice_name());
                 viewHolder.txt_date.setText(model.getCreate_date());
                 viewHolder.txt_message.setText(model.getMessage()); // the message
+                viewHolder.txt_datainfo.setText("Data Info: " + model.getSearch_date() + " " + model.getImage_status());
 //                Picasso.with(getContext()).load(model.getImgdata_url()).into(viewHolder.imgUsersimg);
 
             }
@@ -94,12 +95,14 @@ public class BBLogFragment extends Fragment{
         TextView txt_device_name;
         TextView txt_date;
         TextView txt_message;
+        TextView txt_datainfo;
 
         public UserSysMessageViewHolder(View itemView){
             super(itemView);
             txt_device_name = (TextView) itemView.findViewById(R.id.lay_sysmes_txtviewdevicename);
             txt_date = (TextView) itemView.findViewById(R.id.lay_sysmes_createdate);
             txt_message = (TextView) itemView.findViewById(R.id.lay_sysmes_txtviewmessage);
+            txt_datainfo = (TextView) itemView.findViewById(R.id.lay_sysmes_txtviewdatainfo);
         }
 
 

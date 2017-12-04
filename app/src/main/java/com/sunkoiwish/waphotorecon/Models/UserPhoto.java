@@ -9,7 +9,7 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 public class UserPhoto {
 
-    private String user_photo_id;
+    private String photo_id;
     private String user_id;
     private String user_name;
     private String photo_name;
@@ -21,12 +21,17 @@ public class UserPhoto {
     private String device_name; // used for the name of the device...
     private String is_analyzed; // used for checking if photo has been analyzed already or not
     // false or true, all initial photos are set to false.
+    private String image_status; // image status is for picture that were taken continously from start
+    // image_status can be called seed(rand letter a - z + rand number 0 - 100) and then seed(prev rand)_link
+    // for images taken using the application on the phone they will always be seed
+    private String search_date; // search date is short version just for the date. example: 12_05_2017
+
 
     public UserPhoto() {
     }
 
-    public UserPhoto(String user_photo_id, String user_id, String user_name, String photo_name, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date, String device_name, String is_analyzed) {
-        this.user_photo_id = user_photo_id;
+    public UserPhoto(String photo_id, String user_id, String user_name, String photo_name, String imgdata_url, String taken_location, String location_name, String photo_description, String photo_create_date, String device_name, String is_analyzed, String image_status, String search_date) {
+        this.photo_id = photo_id;
         this.user_id = user_id;
         this.user_name = user_name;
         this.photo_name = photo_name;
@@ -37,14 +42,16 @@ public class UserPhoto {
         this.photo_create_date = photo_create_date;
         this.device_name = device_name;
         this.is_analyzed = is_analyzed;
+        this.image_status = image_status;
+        this.search_date = search_date;
     }
 
-    public String getUser_photo_id() {
-        return user_photo_id;
+    public String getPhoto_id() {
+        return photo_id;
     }
 
-    public void setUser_photo_id(String user_photo_id) {
-        this.user_photo_id = user_photo_id;
+    public void setPhoto_id(String photo_id) {
+        this.photo_id = photo_id;
     }
 
     public String getUser_id() {
@@ -127,10 +134,26 @@ public class UserPhoto {
         this.is_analyzed = is_analyzed;
     }
 
+    public String getImage_status() {
+        return image_status;
+    }
+
+    public void setImage_status(String image_status) {
+        this.image_status = image_status;
+    }
+
+    public String getSearch_date() {
+        return search_date;
+    }
+
+    public void setSearch_date(String search_date) {
+        this.search_date = search_date;
+    }
+
     @Override
     public String toString() {
         return "UserPhoto{" +
-                "user_photo_id='" + user_photo_id + '\'' +
+                "photo_id='" + photo_id + '\'' +
                 ", user_id='" + user_id + '\'' +
                 ", user_name='" + user_name + '\'' +
                 ", photo_name='" + photo_name + '\'' +
@@ -141,7 +164,8 @@ public class UserPhoto {
                 ", photo_create_date='" + photo_create_date + '\'' +
                 ", device_name='" + device_name + '\'' +
                 ", is_analyzed='" + is_analyzed + '\'' +
+                ", image_status='" + image_status + '\'' +
+                ", search_date='" + search_date + '\'' +
                 '}';
     }
-
 }

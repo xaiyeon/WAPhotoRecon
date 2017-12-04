@@ -29,6 +29,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +62,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -248,7 +251,7 @@ public class CameraFragment extends Fragment {
             // Adding a try catch for upload service
             try {
 
-                StorageReference uploadTask = mstorageReference.child("photos/users/" + user_id.replace("/", "")).child(newUri.getLastPathSegment());
+                StorageReference uploadTask = mstorageReference.child("users/" + user_id + "/").child("photos/").child(newUri.getLastPathSegment());
                 // Now we trying to upload image...
                 Log.d(TAG, "onActivityResult: Trying to Upload to Fire Base Storage");
 
@@ -286,21 +289,42 @@ public class CameraFragment extends Fragment {
                         try {
                             addresses = geocoder.getFromLocation(s_lat, s_long, 1);
 
-                            String address = addresses.get(0).getAddressLine(0);
-                            String area = addresses.get(0).getLocality();
-                            String city = addresses.get(0).getAdminArea();
-                            String country = addresses.get(0).getCountryName();
-                            String postalcode = addresses.get(0).getPostalCode();
-                            String areax = "";
+                            if(addresses.isEmpty()){
+                                a_location_name = "N/A";
+                            } else {
 
-                            String fulllocationname = address + ", " + area + ", " + city + ", " + country + ", " + postalcode;
-                            String xfulllocationname = address + ", " + city + ", " + country;
-                            a_location_name = xfulllocationname;
+                                String address = addresses.get(0).getAddressLine(0);
+                                String area = addresses.get(0).getLocality();
+                                String city = addresses.get(0).getAdminArea();
+                                String country = addresses.get(0).getCountryName();
+                                String postalcode = addresses.get(0).getPostalCode();
+                                String areax = "";
 
-                        } catch (IOException e) {
+                                String fulllocationname = address + ", " + area + ", " + city + ", " + country + ", " + postalcode;
+                                String xfulllocationname = address + ", " + city + ", " + country;
+                                a_location_name = xfulllocationname;
+
+                            }
+
+                        } catch (Exception e) {
                             Log.d(TAG, "onActivityResult, uploadTask: Failed to get address");
                         }
 
+                        // Used for Seed generation of image_status field
+                        char[] alphabet_seed = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+                        int number_seed = ThreadLocalRandom.current().nextInt(0, 1000);
+                        int number_alpha = ThreadLocalRandom.current().nextInt(0, 25);
+
+                        String image_status = "seed" + alphabet_seed[number_alpha] + Integer.toString(number_seed);
+
+                        // Search date
+                        Calendar calendar = Calendar.getInstance();
+
+                        long year = calendar.get(Calendar.YEAR);
+                        long month = calendar.get(Calendar.MONTH) + 1;
+                        long day = calendar.get(Calendar.DAY_OF_MONTH);
+                        // ex: 2017-12-07
+                        String search_date = year + "-" + month + "-" + day;
 
                         // Now we have everything we need to store on real-time database according to our model class.
                         // Photo does not include is analyzed or
@@ -308,21 +332,21 @@ public class CameraFragment extends Fragment {
                         // Upload our system message first to log
                         String sysmessage = "Photo taken on Android Application using UID: " +  auth.getCurrentUser().getUid().toString();
                         // Now we do a system message upload first.
-                        SysMessage nsysmessage = new SysMessage(UID, auth.getCurrentUser().getUid().toString(), sysmessage, user_device_name, "true", date_time_s);
+                        SysMessage nsysmessage = new SysMessage(UID, auth.getCurrentUser().getUid().toString(), sysmessage, user_device_name, "true", date_time_s , photo_name, image_status, search_date );
                         databaseSysMessage = FirebaseDatabase.getInstance().getReference("usermessagelogs").child(auth.getCurrentUser().getUid().toString());
                         databaseSysMessage.child(UID).setValue(nsysmessage);
 
                         // Now to store into our database!! Now it's in our real-time database
                         // For all photos
                         databasePhoto = FirebaseDatabase.getInstance().getReference("allphotos");
-                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
+                        Photo nphoto = new Photo(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false", image_status, search_date );
                         // This is for ALL THE PHOTOS
                         databasePhoto.child(UID).setValue(nphoto);
 
                         // Next we store the photo into the real-time database for just that user so we can just pull that user's photos...
                         databasePhoto = FirebaseDatabase.getInstance().getReference("userphotos").child(auth.getCurrentUser().getUid().toString());
                         //UserPhoto model isn't used here it is Photo model!
-                        UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false" );
+                        UserPhoto userPhoto = new UserPhoto(UID, auth.getCurrentUser().getUid().toString(), auth.getCurrentUser().getDisplayName().toString(), photo_name, main_data_URL, cur_location, a_location_name, description, date_time_s, user_device_name, "false", image_status, search_date );
                         databasePhoto.child(UID).setValue(userPhoto);
 
                         progressDialog.dismiss();
