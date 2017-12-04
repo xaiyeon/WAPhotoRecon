@@ -37,6 +37,8 @@ public class BBLogFragment extends Fragment{
     private DatabaseReference database_syslog;
 
     RecyclerView rec_view;
+    private LinearLayoutManager mLayoutManager;
+
 
     @Nullable
     @Override
@@ -50,8 +52,13 @@ public class BBLogFragment extends Fragment{
         // get from out database of the usersystemlog messages
         database_syslog = FirebaseDatabase.getInstance().getReference("usermessagelogs").child(auth.getCurrentUser().getUid().toString());
 
+        // Now set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
         rec_view = (RecyclerView) view.findViewById(R.id.FireBaseDBSysLog_RecView);
-        rec_view.setLayoutManager(new LinearLayoutManager(getContext()));
+        rec_view.setLayoutManager(mLayoutManager);
 
         // Don't need to check if we are signed in because you have to sign in...
 

@@ -3,58 +3,74 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="@color/white"
-
     >
 
     <RelativeLayout
-        android:id="@+id/lay_sysmes1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/lay_sysmes_txtviewdevicename"
-            android:layout_marginRight="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello Device Name"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/lay_sysmes_createdate"
-            android:gravity="right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Date"
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/lay_sysmes2"
-        android:layout_below="@+id/lay_sysmes1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/lay_sysmes_txtviewmessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="A message."
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/lay_botpad"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/lay_sysmes2"
-        android:layout_height="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
         >
 
 
-    </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/lay_sysmes1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lay_sysmes_txtviewdevicename"
+                android:layout_marginRight="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hello Device Name"
+                android:textStyle="bold"
+                />
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lay_sysmes1b"
+            android:layout_below="@+id/lay_sysmes1"
+            >
+            <TextView
+                android:id="@+id/lay_sysmes_createdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_sysmes2"
+            android:layout_below="@+id/lay_sysmes1b"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/lay_sysmes_txtviewmessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="A message."
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/lay_botpad"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/lay_sysmes2"
+            android:layout_height="15dp"
+            >
+
+
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

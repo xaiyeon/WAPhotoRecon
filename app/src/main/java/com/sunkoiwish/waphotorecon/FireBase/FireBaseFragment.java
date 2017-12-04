@@ -66,6 +66,7 @@ public class FireBaseFragment extends Fragment {
 
 
     RecyclerView rec_view;
+    private LinearLayoutManager mLayoutManager;
 
     public FireBaseFragment() {
         // Required empty public constructor
@@ -114,8 +115,14 @@ public class FireBaseFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_fire_base, container, false);
 
+        // Now set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+
         rec_view = (RecyclerView) view.findViewById(R.id.FireBaseDB_RecView);
-        rec_view.setLayoutManager(new LinearLayoutManager(getContext()));
+        rec_view.setLayoutManager(mLayoutManager);
 
         // Don't need to check if we are signed in because you have to sign in...
 
