@@ -59,6 +59,7 @@ public class FireBaseFragment extends Fragment {
     // Define the users Firebase DatabaseReference
     private DatabaseReference database_users;
 
+    // Query not used
     Query query = FirebaseDatabase.getInstance()
             .getReference()
             .child("photos")

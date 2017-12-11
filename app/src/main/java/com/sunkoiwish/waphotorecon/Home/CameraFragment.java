@@ -78,6 +78,12 @@ import static android.content.Context.LOCATION_SERVICE;
  * Created by Xaiyeon on 10/24/2017.
  */
 
+/**
+ * TODO: Fix how photo and key value are sometimes mixed up
+ * on front-end base on the key values of our objects. This is the
+ * code for the BeagleBone, make a query to sort by Date created
+ */
+
 @RuntimePermissions
 public class CameraFragment extends Fragment {
 
